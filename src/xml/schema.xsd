@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://docs.oasis-open.org/legalruleml/ns/v1.0/" xmlns:spec="http://ruleml.org/spec" xmlns:v1.0="http://docs.oasis-open.org/legalruleml/ns/v1.0/" xmlns:x="http://www.w3.org/2001/XMLSchema-instance">
+  <xs:import namespace="http://ruleml.org/spec" schemaLocation="spec.xsd"/>
+  <xs:element name="LegalRuleML">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:Comment"/>
+        <xs:element ref="v1.0:LegalSources"/>
+        <xs:element ref="v1.0:Times"/>
+        <xs:element ref="v1.0:TemporalCharacteristics"/>
+        <xs:element ref="v1.0:Authorities"/>
+        <xs:element ref="v1.0:Jurisdictions"/>
+        <xs:element ref="v1.0:Associations"/>
+        <xs:element ref="v1.0:Context"/>
+        <xs:element maxOccurs="unbounded" ref="v1.0:Statements"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Comment" type="xs:string"/>
+  <xs:element name="LegalSources">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:LegalSource"/>
+      </xs:sequence>
+      <xs:attribute name="refType" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LegalSource">
+    <xs:complexType>
+      <xs:attribute name="refersTo" use="required"/>
+      <xs:attribute name="refIDSystemName" use="required"/>
+      <xs:attribute name="refID" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Times">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="spec:Time"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TemporalCharacteristics">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:TemporalCharacteristic"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TemporalCharacteristic">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:forStatus"/>
+        <xs:element ref="v1.0:hasStatusDevelopment"/>
+        <xs:element ref="v1.0:atTime"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="forStatus">
+    <xs:complexType>
+      <xs:attribute name="iri" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hasStatusDevelopment">
+    <xs:complexType>
+      <xs:attribute name="iri" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="atTime">
+    <xs:complexType>
+      <xs:attribute name="keyref" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Authorities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:Authority"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Authority">
+    <xs:complexType>
+      <xs:attribute name="key" use="required"/>
+      <xs:attribute name="sameAs" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Jurisdictions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:Jurisdiction"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Jurisdiction">
+    <xs:complexType>
+      <xs:attribute name="key" use="required"/>
+      <xs:attribute name="sameAs" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Associations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="v1.0:Association"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Association">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="v1.0:appliesAuthority"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="v1.0:appliesSource"/>
+          <xs:element ref="v1.0:appliesTemporalCharacteristics"/>
+          <xs:element ref="v1.0:appliesJurisdiction"/>
+        </xs:choice>
+        <xs:element maxOccurs="unbounded" ref="v1.0:toTarget"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="toTarget">
+    <xs:complexType>
+      <xs:attribute name="keyref" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Context">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:appliesSource"/>
+        <xs:element ref="v1.0:appliesTemporalCharacteristics"/>
+        <xs:element ref="v1.0:appliesAuthority"/>
+        <xs:element ref="v1.0:appliesJurisdiction"/>
+        <xs:element maxOccurs="unbounded" ref="v1.0:inScope"/>
+      </xs:sequence>
+      <xs:attribute name="hasCreationDate" use="required"/>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inScope">
+    <xs:complexType>
+      <xs:attribute name="keyref" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Statements">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="v1.0:PrescriptiveStatement"/>
+        <xs:element ref="v1.0:PenaltyStatement"/>
+        <xs:element maxOccurs="unbounded" ref="v1.0:ReparationStatement"/>
+        <xs:element ref="v1.0:OverrideStatement"/>
+      </xs:choice>
+      <xs:attribute name="key"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PrescriptiveStatement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="spec:Rule"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hasStrength">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:Defeater"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Defeater">
+    <xs:complexType>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Prohibition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="spec:Atom"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Permission">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="spec:Atom"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PenaltyStatement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:SuborderList"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SuborderList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:Obligation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Obligation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="spec:And"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="spec:Atom"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReparationStatement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:Reparation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Reparation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:appliesPenalty"/>
+        <xs:element ref="v1.0:toPrescriptiveStatement"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="appliesPenalty">
+    <xs:complexType>
+      <xs:attribute name="keyref" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="toPrescriptiveStatement">
+    <xs:complexType>
+      <xs:attribute name="keyref" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OverrideStatement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:Override"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Override">
+    <xs:complexType>
+      <xs:attribute name="over" use="required"/>
+      <xs:attribute name="under" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="appliesSource">
+    <xs:complexType>
+      <xs:attribute name="keyref" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="appliesTemporalCharacteristics">
+    <xs:complexType>
+      <xs:attribute name="keyref" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="appliesJurisdiction">
+    <xs:complexType>
+      <xs:attribute name="keyref" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="appliesAuthority">
+    <xs:complexType>
+      <xs:attribute name="keyref" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

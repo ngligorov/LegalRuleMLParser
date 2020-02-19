@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://ruleml.org/spec" xmlns:spec="http://ruleml.org/spec" xmlns:v1.0="http://docs.oasis-open.org/legalruleml/ns/v1.0/" xmlns:x="http://www.w3.org/2001/XMLSchema-instance">
+  <xs:import namespace="http://docs.oasis-open.org/legalruleml/ns/v1.0/" schemaLocation="schema.xsd"/>
+<!--   <xs:import namespace="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="x.xsd"/> -->
+  <xs:element name="Time">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="spec:Data"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Data">
+    <xs:complexType mixed="true">
+<!--       <xs:attribute ref="x:type" use="required"/> -->
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Rule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="v1.0:hasStrength"/>
+        <xs:element ref="spec:if"/>
+        <xs:element ref="spec:then"/>
+      </xs:sequence>
+      <xs:attribute name="keyref" use="required"/>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="if">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="spec:And"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="then">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="v1.0:Prohibition"/>
+        <xs:element ref="v1.0:Permission"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Atom">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="spec:Rel"/>
+        <xs:element maxOccurs="unbounded" ref="spec:Var"/>
+        <xs:element minOccurs="0" ref="spec:Ind"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Rel">
+    <xs:complexType>
+      <xs:attribute name="iri" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Var" type="xs:string"/>
+  <xs:element name="Ind" type="xs:string"/>
+  <xs:element name="And">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="spec:Atom"/>
+        <xs:element minOccurs="0" ref="spec:Or"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Or">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="spec:Atom"/>
+      </xs:sequence>
+      <xs:attribute name="key" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
