@@ -66,4 +66,8 @@ public class Rel {
         this.iri = value;
     }
 
+	public String toString() {
+		return "Rel [iri=" + iri + "]";
+	}
+
 }

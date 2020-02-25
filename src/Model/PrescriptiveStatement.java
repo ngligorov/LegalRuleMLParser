@@ -98,4 +98,8 @@ public class PrescriptiveStatement {
         this.key = value;
     }
 
+	public String toString() {
+		return "PrescriptiveStatement [rule=" + rule + ", key=" + key + "]";
+	}
+
 }

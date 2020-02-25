@@ -66,4 +66,8 @@ public class Defeater {
         this.key = value;
     }
 
+	public String toString() {
+		return "Defeater [key=" + key + "]";
+	}
+
 }

@@ -189,4 +189,10 @@ public class Statements {
         this.key = value;
     }
 
+	public String toString() {
+		return "Statements [prescriptiveStatement=" + prescriptiveStatement + ", penaltyStatement=" + penaltyStatement
+				+ ", reparationStatement=" + reparationStatement + ", overrideStatement=" + overrideStatement + ", key="
+				+ key + "]";
+	}
+
 }

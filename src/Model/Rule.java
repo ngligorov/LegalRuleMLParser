@@ -182,4 +182,9 @@ public class Rule {
         this.key = value;
     }
 
+	public String toString() {
+		return "Rule [hasStrength=" + hasStrength + ", _if=" + _if + ", then=" + then + ", keyref=" + keyref + ", key="
+				+ key + "]";
+	}
+
 }

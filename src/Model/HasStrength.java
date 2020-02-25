@@ -68,4 +68,8 @@ public class HasStrength {
         this.defeater = value;
     }
 
+	public String toString() {
+		return "HasStrength [defeater=" + defeater + "]";
+	}
+
 }

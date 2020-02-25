@@ -133,4 +133,8 @@ public class And {
         this.key = value;
     }
 
+	public String toString() {
+		return "And [atom=" + atom + ", or=" + or + ", key=" + key + "]";
+	}
+
 }

@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import Model.LegalRuleML;
+import Parser.JavaToDefeisible;
 
 public class Main {
 
@@ -20,7 +21,7 @@ public class Main {
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 		LegalRuleML legalRuleML = (LegalRuleML) jaxbUnmarshaller.unmarshal(file);
 		
-		System.out.println(legalRuleML.toString());
+		JavaToDefeisible.parse(legalRuleML);
 	}
 
 }

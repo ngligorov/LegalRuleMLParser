@@ -161,4 +161,8 @@ public class Atom {
         this.key = value;
     }
 
+	public String toString() {
+		return "Atom [rel=" + rel + ", var=" + var + ", ind=" + ind + ", key=" + key + "]";
+	}
+
 }

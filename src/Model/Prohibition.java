@@ -98,4 +98,8 @@ public class Prohibition {
         this.key = value;
     }
 
+	public String toString() {
+		return "Prohibition [atom=" + atom + ", key=" + key + "]";
+	}
+
 }

@@ -68,4 +68,8 @@ public class If {
         this.and = value;
     }
 
+	public String toString() {
+		return "If [and=" + and + "]";
+	}
+
 }

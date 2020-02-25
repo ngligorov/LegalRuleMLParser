@@ -96,4 +96,8 @@ public class Then {
         this.permission = value;
     }
 
+	public String toString() {
+		return "Then [prohibition=" + prohibition + ", permission=" + permission + "]";
+	}
+
 }
