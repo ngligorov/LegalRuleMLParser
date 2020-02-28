@@ -68,4 +68,8 @@ public class OverrideStatement {
         this.override = value;
     }
 
+	public String toString() {
+		return "OverrideStatement [override=" + override + "]";
+	}
+
 }

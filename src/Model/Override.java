@@ -5,7 +5,6 @@
 // Generated on: 2020.02.19 at 10:16:28 PM CET 
 //
 
-
 package Model;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -15,11 +14,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -39,59 +40,55 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "Override")
 public class Override {
 
-    @XmlAttribute(name = "over", required = true)
-    @XmlSchemaType(name = "anySimpleType")
-    protected String over;
-    @XmlAttribute(name = "under", required = true)
-    @XmlSchemaType(name = "anySimpleType")
-    protected String under;
+	@XmlAttribute(name = "over", required = true)
+	@XmlSchemaType(name = "anySimpleType")
+	protected String over;
+	@XmlAttribute(name = "under", required = true)
+	@XmlSchemaType(name = "anySimpleType")
+	protected String under;
 
-    /**
-     * Gets the value of the over property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getOver() {
-        return over;
-    }
+	/**
+	 * Gets the value of the over property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getOver() {
+		return over;
+	}
 
-    /**
-     * Sets the value of the over property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setOver(String value) {
-        this.over = value;
-    }
+	/**
+	 * Sets the value of the over property.
+	 * 
+	 * @param value allowed object is {@link String }
+	 * 
+	 */
+	public void setOver(String value) {
+		this.over = value;
+	}
 
-    /**
-     * Gets the value of the under property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getUnder() {
-        return under;
-    }
+	/**
+	 * Gets the value of the under property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getUnder() {
+		return under;
+	}
 
-    /**
-     * Sets the value of the under property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setUnder(String value) {
-        this.under = value;
-    }
+	/**
+	 * Sets the value of the under property.
+	 * 
+	 * @param value allowed object is {@link String }
+	 * 
+	 */
+	public void setUnder(String value) {
+		this.under = value;
+	}
+
+	public String toString() {
+		return "Override [over=" + over + ", under=" + under + "]";
+	}
 
 }
