@@ -1,0 +1,23 @@
+set @age = @VAL(10)
+>> pedestrian_zone
+
+rule: => driveBicycle
+
+ps1: $@age < 12$ ~> -driveBicycle
+
+ps21: $@age > 9$, pedestrian_zone ~> driveBicycle
+ps21 > ps1
+
+ps22: $@age > 9$, slow_traffic_zone ~> driveBicycle
+ps22 > ps1
+
+ps23: $@age > 9$, 30_zone ~> driveBicycle
+ps23 > ps1
+
+ps24: $@age > 9$, school_zone ~> driveBicycle
+ps24 > ps1
+
+ps25: $@age > 9$, uncategorized_road ~> driveBicycle
+ps25 > ps1
+
+
