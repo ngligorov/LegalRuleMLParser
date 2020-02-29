@@ -1,0 +1,5 @@
+rule: => prvenstvo
+
+ps1: $@tip_puta = 10$, zemljani_put ~> -prvenstvo
+ps2: $@tip_puta = 10$, povrsina_bez_javnog_saobracaja ~> -prvenstvo
+

@@ -1,7 +1,5 @@
-set @age = @VAL(10)
->> pedestrian_zone
-
 rule: => driveBicycle
+rule: => 
 
 ps1: $@age < 12$ ~> -driveBicycle
 

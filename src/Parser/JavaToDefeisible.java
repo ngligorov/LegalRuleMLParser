@@ -21,6 +21,7 @@ public class JavaToDefeisible {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
 		List<String> decomposedRules = new ArrayList<>();
+		List<String> writtenRules = new ArrayList<>();
 
 		// za ispis pocetnog pravila, svi smeju sve
 		for (Statements statement : legalRuleML.getStatements())
@@ -30,17 +31,27 @@ public class JavaToDefeisible {
 
 				if (statement.getPrescriptiveStatement().getRule().getThen().getProhibition() != null) {
 					// prohibicija
-					writer.write(statement.getPrescriptiveStatement().getRule().getThen().getProhibition().getAtom()
-							.getRel().getIri().substring(1));
+					if (!writtenRules.contains(statement.getPrescriptiveStatement().getRule().getThen().getProhibition()
+							.getAtom().getRel().getIri().substring(1))) {
+						writer.write(statement.getPrescriptiveStatement().getRule().getThen().getProhibition().getAtom()
+								.getRel().getIri().substring(1));
+
+						writtenRules.add(statement.getPrescriptiveStatement().getRule().getThen().getProhibition()
+								.getAtom().getRel().getIri().substring(1));
+					}
 				} else if (statement.getPrescriptiveStatement().getRule().getThen().getPermission() != null) {
 					// permisija
-					writer.write(statement.getPrescriptiveStatement().getRule().getThen().getPermission().getAtom()
-							.getRel().getIri().substring(1));
+					if (!writtenRules.contains(statement.getPrescriptiveStatement().getRule().getThen().getPermission()
+							.getAtom().getRel().getIri().substring(1))) {
+						writer.write(statement.getPrescriptiveStatement().getRule().getThen().getPermission().getAtom()
+								.getRel().getIri().substring(1));
+
+						writtenRules.add(statement.getPrescriptiveStatement().getRule().getThen().getPermission()
+								.getAtom().getRel().getIri().substring(1));
+					}
 				}
 
 				writer.newLine();
-
-				break;
 			}
 
 		// defeateri pocetnog pravila
@@ -52,42 +63,11 @@ public class JavaToDefeisible {
 				if (statement.getPrescriptiveStatement().getRule().getHasStrength() != null) {
 
 					if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getOr() == null) {
-
-						writer.newLine();
-						writer.write(statement.getPrescriptiveStatement().getKey() + ": $@");
-						writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(0)
-								.getRel().getIri().substring(1));
-
-						if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1).getRel()
-								.getIri().equals(":lt"))
-							writer.write(" < ");
-						else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
-								.getRel().getIri().equals(":gt"))
-							writer.write(" > ");
-						else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
-								.getRel().getIri().equals(":eq"))
-							writer.write(" = ");
-
-						writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
-								.getInd());
-
-						writer.write("$");
-					}
-					// vise slucajeva
-					// OR u lrml
-					if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getOr() != null) {
-						decomposedRules.add(statement.getPrescriptiveStatement().getKey());
-
-						int i = 0;
-
 						writer.newLine();
 
-						for (Atom atom : statement.getPrescriptiveStatement().getRule().getIf().getAnd().getOr()
-								.getAtom()) {
-							i++;
-							writer.newLine();
+						if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().size() != 1) {
 
-							writer.write(statement.getPrescriptiveStatement().getKey() + i + ": $@");
+							writer.write(statement.getPrescriptiveStatement().getKey() + ": $@");
 							writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
 									.get(0).getRel().getIri().substring(1));
 
@@ -105,6 +85,53 @@ public class JavaToDefeisible {
 									.get(1).getInd());
 
 							writer.write("$");
+						} else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+								.size() == 1) {
+
+							writer.write(statement.getPrescriptiveStatement().getKey() + ": ");
+							writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+									.get(0).getInd());
+						}
+					}
+					// vise slucajeva
+					// OR u lrml
+					if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getOr() != null) {
+						decomposedRules.add(statement.getPrescriptiveStatement().getKey());
+
+						int i = 0;
+
+						writer.newLine();
+
+						for (Atom atom : statement.getPrescriptiveStatement().getRule().getIf().getAnd().getOr()
+								.getAtom()) {
+							i++;
+							writer.newLine();
+
+							if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().size() != 1) {
+								writer.write(statement.getPrescriptiveStatement().getKey() + i + ": $@");
+								writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+										.get(0).getRel().getIri().substring(1));
+
+								if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
+										.getRel().getIri().equals(":lt"))
+									writer.write(" < ");
+								else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+										.get(1).getRel().getIri().equals(":gt"))
+									writer.write(" > ");
+								else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+										.get(1).getRel().getIri().equals(":eq"))
+									writer.write(" = ");
+
+								writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+										.get(1).getInd());
+
+								writer.write("$");
+							} else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+									.size() == 1) {
+								writer.write(statement.getPrescriptiveStatement().getKey() + i + ": ");
+								writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+										.get(0).getInd());
+							}
 
 							writer.write(", ");
 							writer.write(atom.getInd());

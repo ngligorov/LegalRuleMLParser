@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="./schemas/relaxng/lrml-compact.rnc" type="application/relax-ng-compact-syntax"?>
+<lrml:LegalRuleML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://docs.oasis-open.org/legalruleml/ns/v1.0/" xmlns:lrml="http://docs.oasis-open.org/legalruleml/ns/v1.0/" xmlns:ruleml="http://ruleml.org/spec" xsi:schemaLocation="http://docs.oasis-open.org/legalruleml/ns/v1.0/ ../../schemas/xsd/xsd-compact/lrml-compact.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<lrml:Comment>Zakon o bezbednosti saobracaja na putevima - Clan 47</lrml:Comment>
+
+    <lrml:LegalSources>
+        <lrml:LegalSource key="ls1" sameAs="https://www.paragraf.rs/propisi/zakon_o_bezbednosti_saobracaja_na_putevima.html#"/>
+    </lrml:LegalSources>
+    
+    <lrml:Context key="psInfo1">
+        <lrml:appliesAssociations>
+            <lrml:Associations>
+                    <lrml:Association>
+                        <lrml:appliesSource keyref="#ls1"/>
+                        <lrml:toTarget keyref="#ps1"/>
+                        <lrml:toTarget keyref="#ps2"/>
+                        <lrml:toTarget keyref="#pen1"/>
+                        <lrml:toTarget keyref="#pen2"/>
+                    </lrml:Association>
+            </lrml:Associations>
+        </lrml:appliesAssociations>
+    </lrml:Context>
+
+    <lrml:Statements key="textblock1">
+        <lrml:hasQualification>
+            <lrml:Override over="#ps2" under="#ps1"/>
+        </lrml:hasQualification>
+
+        <lrml:PrescriptiveStatement key="ps1">
+            <ruleml:Rule key=":rule1" closure="universal">
+                <lrml:hasStrength>
+                    <lrml:DefeasibleStrength key="str1"/>
+                </lrml:hasStrength>
+                <ruleml:if>
+                    <ruleml:And key=":and1">
+                    <ruleml:Atom key=":atom1">
+                					<ruleml:Rel iri=":tip_puta"/>    
+                					<ruleml:Var>X</ruleml:Var>	
+                					<ruleml:Ind>savremeni_kolovozni_zastor</ruleml:Ind>	
+              					</ruleml:Atom>
+                    <ruleml:Or key=":or1">
+                        <ruleml:Atom key=":atom2">
+                            <ruleml:Rel iri=":eq"/>
+                            <ruleml:Var>X</ruleml:Var>
+                            <ruleml:Ind>zemljani_put</ruleml:Ind>
+                        </ruleml:Atom>
+                        <ruleml:Atom key=":atom3">
+                            <ruleml:Rel iri=":eq"/>
+                            <ruleml:Var>X</ruleml:Var>
+                            <ruleml:Ind>povrsina_bez_javnog_saobracaja</ruleml:Ind>
+                        </ruleml:Atom>
+                    </ruleml:Or>
+                    </ruleml:And>
+                </ruleml:if>
+                <ruleml:then>
+                        <lrml:Prohibition>
+                        <ruleml:Atom>
+                            <ruleml:Rel iri=":prvenstvo"/>
+                            <ruleml:Var>X</ruleml:Var>
+                        </ruleml:Atom>
+                        </lrml:Prohibition>
+                </ruleml:then>
+            </ruleml:Rule>
+        </lrml:PrescriptiveStatement>
+    </lrml:Statements>
+
+</lrml:LegalRuleML>
