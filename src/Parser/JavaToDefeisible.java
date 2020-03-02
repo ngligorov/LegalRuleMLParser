@@ -39,6 +39,7 @@ public class JavaToDefeisible {
 
 						writtenRules.add(statement.getPrescriptiveStatement().getRule().getThen().getProhibition()
 								.getAtom().getRel().getIri().substring(1));
+						writer.newLine();
 					}
 				} else if (statement.getPrescriptiveStatement().getRule().getThen().getPermission() != null) {
 					// permisija
@@ -50,10 +51,11 @@ public class JavaToDefeisible {
 
 						writtenRules.add(statement.getPrescriptiveStatement().getRule().getThen().getPermission()
 								.getAtom().getRel().getIri().substring(1));
+						writer.newLine();
 					}
 				}
 
-				writer.newLine();
+				
 			}
 
 		// defeateri pocetnog pravila

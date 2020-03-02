@@ -1,16 +1,14 @@
 rule: => prvenstvo
 
 
-
-
-
 ps1_1: savremeni_kolovozni_zastor, zemljani_put ~> -prvenstvo
 ps1_2: savremeni_kolovozni_zastor, povrsina_bez_javnog_saobracaja ~> -prvenstvo
 
 ps2_1: preseca_biciklisticku_stazu, biciklisticka_staza ~> -prvenstvo
 ps3: vozilo_nailazi_zdesna ~> -prvenstvo
 
-ps4_1: skretanje_ulevo, zadrzava_pravac_kretanja_iz_suprotnog_smera ~> -prvenstvo
+ps4_1: skretanje_ulevo, zadrzava_pravac_kretanja_iz_suprotnog_smera
+								 ~> -prvenstvo
 ps4_2: skretanje_ulevo, skrece_udesno_iz_suprotnog_smera ~> -prvenstvo
 
 
