@@ -15,7 +15,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 
-		File file = new File("src/xml/dadsa.xml");
+		File file = new File("src/xml/testPrvi.xml");
 		JAXBContext jaxbContext = JAXBContext.newInstance(LegalRuleML.class);
 		
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();

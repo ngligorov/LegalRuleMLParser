@@ -21,18 +21,19 @@ public class JavaToDefeisible {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
 		List<String> decomposedRules = new ArrayList<>();
+		List<String> partialRules = new ArrayList<>();
 		List<String> writtenRules = new ArrayList<>();
 
 		// za ispis pocetnog pravila, svi smeju sve
 		for (Statements statement : legalRuleML.getStatements())
 			if (statement.getPrescriptiveStatement() != null) {
 				// ispisi defeisible pravilo
-				writer.write("rule: => ");
 
 				if (statement.getPrescriptiveStatement().getRule().getThen().getProhibition() != null) {
 					// prohibicija
 					if (!writtenRules.contains(statement.getPrescriptiveStatement().getRule().getThen().getProhibition()
 							.getAtom().getRel().getIri().substring(1))) {
+						writer.write("rule: => ");
 						writer.write(statement.getPrescriptiveStatement().getRule().getThen().getProhibition().getAtom()
 								.getRel().getIri().substring(1));
 
@@ -43,6 +44,7 @@ public class JavaToDefeisible {
 					// permisija
 					if (!writtenRules.contains(statement.getPrescriptiveStatement().getRule().getThen().getPermission()
 							.getAtom().getRel().getIri().substring(1))) {
+						writer.write("rule: => ");
 						writer.write(statement.getPrescriptiveStatement().getRule().getThen().getPermission().getAtom()
 								.getRel().getIri().substring(1));
 
@@ -96,19 +98,21 @@ public class JavaToDefeisible {
 					// vise slucajeva
 					// OR u lrml
 					if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getOr() != null) {
-						decomposedRules.add(statement.getPrescriptiveStatement().getKey());
+						int i = 1;
 
-						int i = 0;
+						decomposedRules.add(statement.getPrescriptiveStatement().getKey());
 
 						writer.newLine();
 
 						for (Atom atom : statement.getPrescriptiveStatement().getRule().getIf().getAnd().getOr()
 								.getAtom()) {
-							i++;
+
 							writer.newLine();
 
+							partialRules.add(statement.getPrescriptiveStatement().getKey() + "_" + i);
+
 							if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().size() != 1) {
-								writer.write(statement.getPrescriptiveStatement().getKey() + i + ": $@");
+								writer.write(statement.getPrescriptiveStatement().getKey() + "_" + i + ": $@");
 								writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
 										.get(0).getRel().getIri().substring(1));
 
@@ -128,10 +132,11 @@ public class JavaToDefeisible {
 								writer.write("$");
 							} else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
 									.size() == 1) {
-								writer.write(statement.getPrescriptiveStatement().getKey() + i + ": ");
+								writer.write(statement.getPrescriptiveStatement().getKey() + "_" + i + ": ");
 								writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
 										.get(0).getInd());
 							}
+							i++;
 
 							writer.write(", ");
 							writer.write(atom.getInd());
@@ -149,33 +154,6 @@ public class JavaToDefeisible {
 								writer.write(statement.getPrescriptiveStatement().getRule().getThen().getPermission()
 										.getAtom().getRel().getIri().substring(1));
 							}
-
-							// ispisi superiornost dekomponovanog pravila
-							for (Statements s : legalRuleML.getStatements())
-								if (s.getOverrideStatement() != null)
-									if (s.getOverrideStatement().getOverride().getOver().substring(1)
-											.equals(statement.getPrescriptiveStatement().getKey())) {
-
-										writer.newLine();
-
-										writer.write(s.getOverrideStatement().getOverride().getOver().substring(1) + i
-												+ " > " + legalRuleML.getStatements().get(0).getOverrideStatement()
-														.getOverride().getUnder().substring(1));
-
-										writer.newLine();
-									} else if (s.getOverrideStatement().getOverride().getUnder().substring(1)
-											.equals(statement.getPrescriptiveStatement().getKey())) {
-
-										writer.newLine();
-
-										writer.write(s.getOverrideStatement().getOverride().getOver().substring(1)
-												+ " > " + legalRuleML.getStatements().get(0).getOverrideStatement()
-														.getOverride().getUnder().substring(1)
-												+ i);
-
-										writer.newLine();
-									}
-
 						}
 					} else {
 						writer.write(" ~> ");
@@ -194,6 +172,7 @@ public class JavaToDefeisible {
 
 					// /OR
 
+					// TODO skloni ovo kad zavrsis
 					System.out.println(statement.getPrescriptiveStatement().getRule());
 
 				}
@@ -206,13 +185,37 @@ public class JavaToDefeisible {
 		// superiornost pravila
 		for (Statements statement : legalRuleML.getStatements())
 			if (statement.getOverrideStatement() != null)
+				// celo pravilo
 				if (!decomposedRules.contains(statement.getOverrideStatement().getOverride().getOver().substring(1))
 						&& !decomposedRules
-								.contains(statement.getOverrideStatement().getOverride().getUnder().substring(1)))
+								.contains(statement.getOverrideStatement().getOverride().getUnder().substring(1))) {
 
 					writer.write(statement.getOverrideStatement().getOverride().getOver().substring(1) + " > "
 							+ legalRuleML.getStatements().get(0).getOverrideStatement().getOverride().getUnder()
 									.substring(1));
+
+				} else {
+					// dekomponovano pravilo
+					String over = statement.getOverrideStatement().getOverride().getOver().substring(1);
+					String under = statement.getOverrideStatement().getOverride().getUnder().substring(1);
+
+					List<String> partialOvers = new ArrayList<>();
+					List<String> partialUnders = new ArrayList<>();
+
+					for (String partialRule : partialRules) {
+						if (partialRule.contains(over))
+							partialOvers.add(partialRule);
+						else if (partialRule.contains(under))
+							partialUnders.add(partialRule);
+					}
+
+					for (String partialOver : partialOvers)
+						for (String partialUnder : partialUnders) {
+
+							writer.newLine();
+							writer.write(partialOver + " > " + partialUnder);
+						}
+				}
 
 		writer.close();
 

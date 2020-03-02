@@ -1,9 +1,0 @@
->>zemljani_put
->>povrsina_bez_javnog_saobracaja
-
-rule: => prvenstvo
-rule1: => prvenstvo
-
-ps11: savremeni_kolovozni_zastor, zemljani_put ~> -prvenstvo
-ps12: savremeni_kolovozni_zastor, povrsina_bez_javnog_saobracaja ~> -prvenstvo
-
