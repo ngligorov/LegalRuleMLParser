@@ -168,8 +168,7 @@
 							<ruleml:Atom key=":atom3">
 								<ruleml:Rel iri=":eq" />
 								<ruleml:Var>X</ruleml:Var>
-								<ruleml:Ind>zadrzava_pravac_kretanja_iz_suprotnog_smera
-								</ruleml:Ind>
+								<ruleml:Ind>zadrzava_pravac_kretanja_iz_suprotnog_smera</ruleml:Ind>
 							</ruleml:Atom>
 							<ruleml:Atom key=":atom4">
 								<ruleml:Rel iri=":eq" />
