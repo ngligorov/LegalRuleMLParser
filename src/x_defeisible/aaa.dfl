@@ -1,5 +1,4 @@
 rule: => driveBicycle
-rule: => 
 
 ps1: $@age < 12$ ~> -driveBicycle
 

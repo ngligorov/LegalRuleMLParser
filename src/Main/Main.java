@@ -1,29 +1,23 @@
 package Main;
 
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.ObjectInputStream.GetField;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+
 import javax.xml.bind.Unmarshaller;
 
-import com.app.utils.Utilities.ProcessStatus;
+import com.app.utils.Converter;
+import com.app.utils.TextUtilities;
 
 import Model.LegalRuleML;
 import Parser.JavaToDefeisible;
 import spindle.Reasoner;
-import spindle.core.ReasonerBase;
-import spindle.core.ReasonerException;
 import spindle.core.dom.Conclusion;
-import spindle.core.dom.ConclusionType;
-import spindle.core.dom.Literal;
 import spindle.core.dom.Theory;
+import spindle.engine.ReasoningEngineFactory;
+import spindle.engine.TheoryNormalizer;
+import spindle.io.IOManager;
 
 public class Main {
 
@@ -32,41 +26,30 @@ public class Main {
 
 		File file = new File("src/xml/testPrvi.xml");
 		JAXBContext jaxbContext = JAXBContext.newInstance(LegalRuleML.class);
-		
+
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 		LegalRuleML legalRuleML = (LegalRuleML) jaxbUnmarshaller.unmarshal(file);
-		
-		JavaToDefeisible.parse(legalRuleML);
-		
-		BufferedReader br = new BufferedReader(new FileReader("src/x_defeisible/test.dfl"));
-		
-		Reasoner reasoner = new Reasoner();
-		
-		ArrayList<String> list = new ArrayList<>();
-		Map<spindle.core.dom.Literal, Map<spindle.core.dom.ConclusionType, spindle.core.dom.Conclusion>> map = new HashMap<>();
-		
-		String st;
-		while((st = br.readLine()) != null)
-		{
-			list.add(st);
-		}
-		
-		Object[] rulesObject = list.toArray();
-		String[] rules = new String[list.size()];
-		int i = 0;
-		for(Object o : rulesObject) {
-            String s = (String) o;
-            rules[i++] = s;
-		}
-		
-		System.out.println(rules[1]);
-		
-		//????????????????
-		//reasoner.loadTheory(rules);
-		//System.out.println(reasoner.transformTheoryToRegularForm());
 
-		//map = reasoner.getConclusions();
+		JavaToDefeisible.parse(legalRuleML);
+
+		Theory theory = IOManager.getTheory(new File("src/x_defeisible/aaa.dfl"), null);
+		TheoryNormalizer theoryNormalizer  = ReasoningEngineFactory.getTheoryNormalizer(theory.getTheoryType());
+		theoryNormalizer.setTheory(theory);
+		theoryNormalizer.removeDefeater();
+		theory = theoryNormalizer.getTheory();
+		Reasoner reasoner = new Reasoner();
+		reasoner.loadTheory(theory);
+		reasoner.getConclusions();
+		List<Conclusion> conclusions = reasoner.getConclusionsAsList();
 		
+		StringBuilder sb = new StringBuilder(TextUtilities.repeatStringPattern("-", 30));
+		sb.append("\nConclusions\n===========");
+		for (Conclusion conclusion : conclusions) {
+			sb.append("\n").append(conclusion.toString());
+		}
+
+
+		System.out.println(sb.toString());
 	}
 
 }
