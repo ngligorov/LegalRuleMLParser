@@ -1,4 +1,4 @@
-package Parser;
+package parser;
 
 import java.io.BufferedWriter;
 import java.io.File;
