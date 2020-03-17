@@ -1,0 +1,10 @@
+rule: => driveBicycle
+
+ps1: $@age < 12$ ~> -driveBicycle
+
+ps2_1: $@age > 9$, pedestrian_zone ~> driveBicycle
+ps2_2: $@age > 9$, slow_traffic_zone ~> driveBicycle
+ps2_3: $@age > 9$, 30_zone ~> driveBicycle
+ps2_4: $@age > 9$, school_zone ~> driveBicycle
+ps2_5: $@age > 9$, uncategorized_road ~> driveBicycle
+

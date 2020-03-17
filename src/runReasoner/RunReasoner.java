@@ -2,7 +2,9 @@ package runReasoner;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,7 +23,7 @@ import spindle.io.IOManager;
 
 public class RunReasoner {
 	
-	String fileName;	
+	private String fileName;	
 	
 	public void runReasoner() throws Exception {
 		
@@ -44,15 +46,7 @@ public class RunReasoner {
 		  
 		  System.out.println(sb.toString());
 		  //System.out.println(fileName); //provera da li je uhvatio ime fajla
-	}
-	
-	public void chooseFile(String fileName) {
-		  if(fileName.contains("semafor") || fileName.contains("saobracajac") || fileName.contains("znakovi")) {
-		  	  this.fileName = "clan47.dfl";
-		  } else {
-			  System.out.println("Neki drugi DFL fajl");
-		  }
-	}
+	}	
 	
 	
 	public void transformer(File selectedFile) throws JAXBException, IOException {

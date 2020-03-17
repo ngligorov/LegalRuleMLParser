@@ -8,7 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import Main.Main;
 import Model.Atom;
 import Model.LegalRuleML;
 import Model.Statements;
@@ -18,6 +21,8 @@ import javafx.scene.control.TextArea;
 public class JavaToDefeisible {
 
 	public static void parse(LegalRuleML legalRuleML) throws IOException {
+
+		List<String> facts = new ArrayList<>();
 
 		File file = new File("src/x_defeisible/" + legalRuleML.getComment() + ".dfl");
 		file.createNewFile();
@@ -59,7 +64,6 @@ public class JavaToDefeisible {
 					}
 				}
 
-				
 			}
 
 		// defeateri pocetnog pravila
@@ -99,6 +103,12 @@ public class JavaToDefeisible {
 							writer.write(statement.getPrescriptiveStatement().getKey() + ": ");
 							writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
 									.get(0).getInd());
+
+							// dodaj cinjenice u listu
+							if (!facts.contains(statement.getPrescriptiveStatement().getRule().getIf().getAnd()
+									.getAtom().get(0).getInd()))
+								facts.add(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+										.get(0).getInd());
 						}
 					}
 					// vise slucajeva
@@ -141,11 +151,20 @@ public class JavaToDefeisible {
 								writer.write(statement.getPrescriptiveStatement().getKey() + "_" + i + ": ");
 								writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
 										.get(0).getInd());
+
+								// dodaj cinjenice u listu
+								if (!facts.contains(statement.getPrescriptiveStatement().getRule().getIf().getAnd()
+										.getAtom().get(0).getInd()))
+									facts.add(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+											.get(0).getInd());
 							}
 							i++;
 
 							writer.write(", ");
 							writer.write(atom.getInd());
+
+							if (!facts.contains(atom.getInd()))
+								facts.add(atom.getInd());
 
 							writer.write(" ~> ");
 
@@ -224,17 +243,28 @@ public class JavaToDefeisible {
 				}
 
 		writer.close();
-		
-		//citaj iz fajla i ispisi u textArea1
-		BufferedReader br = new BufferedReader(new FileReader(file)); 
-		MainView mw = new MainView();
-		  
-		String st;
-		String fileText = "";
-		while ((st = br.readLine()) != null) {
-			fileText = fileText + st + "\n";
+
+		// dodaj u mapu cinjenica i fajlova
+		Main.factsFileMap.put(legalRuleML.getComment() + ".dfl", new ArrayList<>(facts));
+
+		for (Entry<String, List<String>> keyValue : Main.factsFileMap.entrySet()) {
+			System.out.println(keyValue.getKey());
+
+			for (String str : keyValue.getValue())
+				System.out.println(str);
 		}
-		
-		mw.getTextArea1().setText(fileText);
+
+//TODO premesti ga na odgovarajuce mesto
+//		// citaj iz fajla i ispisi u textArea1
+//		BufferedReader br = new BufferedReader(new FileReader(file));
+//		MainView mw = new MainView();
+//
+//		String st;
+//		String fileText = "";
+//		while ((st = br.readLine()) != null) {
+//			fileText = fileText + st + "\n";
+//		}
+//
+//		mw.getTextArea1().setText(fileText);
 	}
 }
