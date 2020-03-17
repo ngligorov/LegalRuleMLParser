@@ -29,11 +29,11 @@
 		</lrml:appliesAssociations>
 	</lrml:Context>
 
-	<lrml:Statements key="ovr1">
-		<lrml:OverrideStatement>
-			<lrml:Override over="#ps2" under="#ps1" />
-		</lrml:OverrideStatement>
-	</lrml:Statements>
+<!-- 	<lrml:Statements key="ovr1"> -->
+<!-- 		<lrml:OverrideStatement> -->
+<!-- 			<lrml:Override over="#ps2" under="#ps1" /> -->
+<!-- 		</lrml:OverrideStatement> -->
+<!-- 	</lrml:Statements> -->
 	<!--Clan 47. 1 -->
 	<lrml:Statements key="textblock1">
 		<lrml:hasQualification>

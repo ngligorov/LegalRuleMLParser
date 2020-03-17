@@ -10,6 +10,3 @@ ps3: vozilo_nailazi_zdesna ~> -prvenstvo
 ps4_1: skretanje_ulevo, zadrzava_pravac_kretanja_iz_suprotnog_smera ~> -prvenstvo
 ps4_2: skretanje_ulevo, skrece_udesno_iz_suprotnog_smera ~> -prvenstvo
 
-
-ps2_1 > ps1_1
-ps2_1 > ps1_2

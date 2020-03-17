@@ -1,8 +1,16 @@
 package runReasoner;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -16,46 +24,122 @@ import Model.LegalRuleML;
 import parser.JavaToDefeisible;
 import spindle.Reasoner;
 import spindle.core.dom.Conclusion;
+import spindle.core.dom.Literal;
+import spindle.core.dom.Mode;
+import spindle.core.dom.Rule;
+import spindle.core.dom.RuleException;
+import spindle.core.dom.RuleType;
 import spindle.core.dom.Theory;
 import spindle.engine.ReasoningEngineFactory;
 import spindle.engine.TheoryNormalizer;
 import spindle.io.IOManager;
 
 public class RunReasoner {
-	
-	private String fileName;	
-	
-	public void runReasoner() throws Exception {
+
+	private String fileName;
+	private List<String> facts = new ArrayList<>();
+	private List<Rule> ruleFacts = new ArrayList<>();
+
+	public List<Conclusion> runReasoner() throws Exception {
+//		Rule fact = new Rule("pedestrian_zone", RuleType.FACT);
+//		fact.addHeadLiteral(new Literal("pedestrian_zone"));
+//		System.out.println(fact.toString());
+
+//		createFacts();
+		addFacts();
+		Theory theory = IOManager.getTheory(new File("src/x_defeisible/" + fileName), null);
+
+//		for(Rule fact : ruleFacts)
+//			theory.getFactsAndAllRules().put(fact.getLabel(), fact);
+
+//		System.out.println("AAAAAAAAAAAAAA -----> " + theory.getFactsCount());
+		TheoryNormalizer theoryNormalizer = ReasoningEngineFactory.getTheoryNormalizer(theory.getTheoryType());
+		theoryNormalizer.setTheory(theory);
+		theoryNormalizer.removeDefeater();
+		theoryNormalizer.removeSuperiority();
+		theoryNormalizer.transformTheoryToRegularForm();
+		theory = theoryNormalizer.getTheory();
+		Reasoner reasoner = new Reasoner();
+		reasoner.loadTheory(theory);
+		reasoner.getConclusions();
+		List<Conclusion> conclusions = reasoner.getConclusionsAsList();
+
+		StringBuilder sb = new StringBuilder(TextUtilities.repeatStringPattern("-", 30));
+		sb.append("\nConclusions\n===========");
+		for (Conclusion conclusion : conclusions) {
+			sb.append("\n").append(conclusion.toString());
+		}
+
+		System.out.println(sb.toString());
+		// System.out.println(fileName); //provera da li je uhvatio ime fajla
+
+		return conclusions;
+	}
+
+	private void createFacts() throws RuleException {
+		for (String fact : this.facts) {
+			Rule rule = new Rule("", RuleType.FACT);
+			rule.addHeadLiteral(new Literal(fact));
+			rule.setLabel(fact);
+			System.out.println(rule.toString());
+		}
+	}
+
+	private void addFacts() throws Exception {
+		BufferedReader br = new BufferedReader(new FileReader("src/x_defeisible/" + fileName));
+
+		StringBuilder sb = new StringBuilder();
+		String line = br.readLine();
+
+		while (line != null) {
+			sb.append(line);
+			sb.append(System.lineSeparator());
+			line = br.readLine();
+		}
 		
-		  Theory theory = IOManager.getTheory(new File("src/x_defeisible/" + fileName),null); 
-		  TheoryNormalizer theoryNormalizer = ReasoningEngineFactory.getTheoryNormalizer(theory.getTheoryType());
-		  theoryNormalizer.setTheory(theory); 
-		  theoryNormalizer.removeDefeater(); 
-		  theory = theoryNormalizer.getTheory(); 
-		  Reasoner reasoner = new Reasoner();
-		  reasoner.loadTheory(theory); 
-		  reasoner.getConclusions(); 
-		  List<Conclusion> conclusions = reasoner.getConclusionsAsList();
-		  
-		  StringBuilder sb = new StringBuilder(TextUtilities.repeatStringPattern("-", 30)); 
-		  sb.append("\nConclusions\n==========="); 
-		  for (Conclusion conclusion : conclusions) { 
-			  sb.append("\n").append(conclusion.toString()); 
-		  }
-		  
-		  
-		  System.out.println(sb.toString());
-		  //System.out.println(fileName); //provera da li je uhvatio ime fajla
-	}	
-	
-	
+		String everything = sb.toString();
+
+		br.close();
+
+		sb = new StringBuilder();
+
+		for (String fact : facts) {
+			sb.append(">>" + fact);
+			sb.append(System.lineSeparator());
+		}
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		
+		sb.append(everything);
+
+		PrintWriter writer = new PrintWriter("src/x_defeisible/" + fileName);
+		writer.print(sb.toString());
+		writer.close();
+	}
+
 	public void transformer(File selectedFile) throws JAXBException, IOException {
-		  //File file = new File("src/xml/" + fileName); 
-		  JAXBContext jaxbContext = JAXBContext.newInstance(LegalRuleML.class);
-		  
-		  Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller(); LegalRuleML
-		  legalRuleML = (LegalRuleML) jaxbUnmarshaller.unmarshal(selectedFile);
-		  
-		  JavaToDefeisible.parse(legalRuleML);
+		// File file = new File("src/xml/" + fileName);
+		JAXBContext jaxbContext = JAXBContext.newInstance(LegalRuleML.class);
+
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		LegalRuleML legalRuleML = (LegalRuleML) jaxbUnmarshaller.unmarshal(selectedFile);
+
+		JavaToDefeisible.parse(legalRuleML);
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public List<String> getFacts() {
+		return facts;
+	}
+
+	public void setFacts(List<String> facts) {
+		this.facts = facts;
 	}
 }

@@ -1,6 +1,8 @@
 package view;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ import javax.swing.plaf.FileChooserUI;
 import javax.xml.bind.JAXBException;
 
 import org.controlsfx.control.CheckListView;
+
+import com.app.utils.TextUtilities;
 
 import Main.Main;
 import javafx.application.Application;
@@ -24,6 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import runReasoner.RunReasoner;
+import spindle.core.dom.Conclusion;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
@@ -44,15 +49,13 @@ public class MainView extends Application {
 	private static TextArea textArea2;
 	private Label lbl1, lbl2;
 	private File selectedFile;
+	private String chosenFileBtn1;
 
-	RunReasoner rr = new RunReasoner();
+	private RunReasoner rr = new RunReasoner();
 
 	@SuppressWarnings("restriction")
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
-		parseXmlFiles();
-
 		primaryStage.setTitle("LRMLtoDFL");
 		primaryStage.setResizable(false);
 
@@ -84,7 +87,16 @@ public class MainView extends Application {
 		primaryStage.setScene(scene);
 
 		// ***************DIALOG WIZARD***************//
-		btn1.setOnAction(e -> wizardWindow1());
+		btn1.setOnAction(e -> {
+			try {
+				parseXmlFiles();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			wizardWindow1();
+			
+		});
 
 		btn2.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
@@ -119,64 +131,83 @@ public class MainView extends Application {
 		result.ifPresent(chosenFile -> {
 			System.out.println("Your choice: " + chosenFile);
 			wizardWindow2(chosenFile);
+			this.chosenFileBtn1 = chosenFile;
 		});
 
 	}
 
 	public void wizardWindow2(String chosenFile) {
 		ObservableList<String> choices = FXCollections.observableArrayList();
-//
+
 		choices.addAll(Main.factsFileMap.get(chosenFile));
-//
-//		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
-//		dialog.setTitle("Choice Dialog");
-//		dialog.setHeaderText("Look, a Choice Dialog");
-//		dialog.setContentText("Choose your number:");
-//
-//		Optional<String> result = dialog.showAndWait();
-//		result.ifPresent(number -> System.out.println("Your choice: " + number));
-		
-		//Rectangle rect = new Rectangle(100, 100, 200, 300);
-		
-		// create the data to show in the CheckListView 
-//		 final ObservableList<String> strings = FXCollections.observableArrayList();
-//		 for (int i = 0; i <= 100; i++) {
-//		     strings.add("Item " + i);
-//		 }
-		 
-		 // Create the CheckListView with the data 
-		 final CheckListView<String> checkListView = new CheckListView<>(choices);
-		       
-		 // and listen to the relevant events (e.g. when the selected indices or 
-		 // selected items change).
-		 checkListView.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
-		     public void onChanged(ListChangeListener.Change<? extends String> c) {
-		         System.out.println(checkListView.getCheckModel().getCheckedItems());
-		     }
-		 });
-		 
+
+		// Create the CheckListView with the data
+		final CheckListView<String> checkListView = new CheckListView<>(choices);
+
+		// and listen to the relevant events (e.g. when the selected indices or
+		// selected items change).
+		checkListView.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+			public void onChanged(ListChangeListener.Change<? extends String> c) {
+				System.out.println(checkListView.getCheckModel().getCheckedItems());
+				ObservableList<String> observableListFacts= checkListView.getCheckModel().getCheckedItems();
+				List<String> facts = new ArrayList<>();
+				
+				for(String fact : observableListFacts)
+					facts.add(fact);
+					
+				rr.setFacts(facts);
+			}
+		});
+
 		Stage window = new Stage();
-		 
+
 		btn1w2 = new Button("Ok");
 		btn2w2 = new Button("Cancel");
-		
+
 		btn2w2.setOnAction(e -> window.close());
 		btn1w2.setOnAction(e -> {
-			System.out.println("TEST TEST TEST");
+
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(new File("src/x_defeisible/" + chosenFileBtn1)));
+
+				String st;
+				String fileText = "";
+				while ((st = br.readLine()) != null) {
+					fileText = fileText + st + "\n";
+				}
+
+				textArea1.setText(fileText);
+				window.close();
+
+				this.rr.setFileName(chosenFileBtn1);
+				List<Conclusion> conclusions = this.rr.runReasoner();
+
+				StringBuilder sb = new StringBuilder(TextUtilities.repeatStringPattern("-", 30));
+				sb.append("\nConclusions\n===========");
+				for (Conclusion conclusion : conclusions) {
+					sb.append("\n").append(conclusion.toString());
+				}
+
+				textArea2.setText(sb.toString());
+
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+
 		});
-		
+
 		VBox vbCenter = new VBox();
 		vbCenter.getChildren().add(checkListView);
 		HBox hbButtons = new HBox();
 		hbButtons.getChildren().add(btn1w2);
 		hbButtons.getChildren().add(btn2w2);
-	    hbButtons.setAlignment(Pos.CENTER_RIGHT);
-		
+		hbButtons.setAlignment(Pos.CENTER_RIGHT);
+
 		BorderPane root = new BorderPane();
 		root.setPadding(new Insets(20));
 		root.setCenter(vbCenter);
-	    root.setBottom(hbButtons);
-		
+		root.setBottom(hbButtons);
+
 		Parent content = root;
 
 		// create scene containing the content

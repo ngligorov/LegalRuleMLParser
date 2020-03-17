@@ -8,7 +8,7 @@
 	xsi:schemaLocation="http://docs.oasis-open.org/legalruleml/ns/v1.0/ ../../schemas/xsd/xsd-compact/lrml-compact.xsd"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<lrml:Comment>Закон о безбедности саобраћаја на путевима</lrml:Comment>
+	<lrml:Comment>Clan88</lrml:Comment>
 
 	<!-- LegalSource(s) is an element that represents IRI-based identifier source(s). -->
 	<lrml:LegalSources

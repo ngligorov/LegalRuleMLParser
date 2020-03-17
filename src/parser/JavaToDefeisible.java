@@ -209,7 +209,8 @@ public class JavaToDefeisible {
 
 		// superiornost pravila
 		for (Statements statement : legalRuleML.getStatements())
-			if (statement.getOverrideStatement() != null)
+			if (statement.getOverrideStatement() != null) {
+				System.out.println("usao sam ovde");
 				// celo pravilo
 				if (!decomposedRules.contains(statement.getOverrideStatement().getOverride().getOver().substring(1))
 						&& !decomposedRules
@@ -218,7 +219,7 @@ public class JavaToDefeisible {
 					writer.write(statement.getOverrideStatement().getOverride().getOver().substring(1) + " > "
 							+ legalRuleML.getStatements().get(0).getOverrideStatement().getOverride().getUnder()
 									.substring(1));
-
+					System.out.println("usao ovde 1");
 				} else {
 					// dekomponovano pravilo
 					String over = statement.getOverrideStatement().getOverride().getOver().substring(1);
@@ -234,14 +235,23 @@ public class JavaToDefeisible {
 							partialUnders.add(partialRule);
 					}
 
+					if(partialOvers.isEmpty())
+						partialOvers.add(over);
+					
+					if(partialUnders.isEmpty())
+						partialUnders.add(under);
+					
 					for (String partialOver : partialOvers)
 						for (String partialUnder : partialUnders) {
 
 							writer.newLine();
 							writer.write(partialOver + " > " + partialUnder);
+							System.out.println("usao ovde 2");
 						}
+					System.out.println("usao ovde 2");
+					
 				}
-
+			}
 		writer.close();
 
 		// dodaj u mapu cinjenica i fajlova

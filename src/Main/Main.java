@@ -1,5 +1,6 @@
 package Main;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,10 @@ public class Main {
 		
 		Application.launch(MainView.class, args); 
 		
-		//RunReasoner rr = new RunReasoner();
-		//rr.runReasoner();
+//		RunReasoner rr = new RunReasoner();
+//		rr.setFileName("Clan88.dfl");
+//		rr.transformer(new File("src/xml/testPrvi.xml"));
+//		rr.runReasoner();
 
 		 
 	}

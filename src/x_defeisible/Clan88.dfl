@@ -8,3 +8,9 @@ ps2_3: $@age > 9$, 30_zone ~> driveBicycle
 ps2_4: $@age > 9$, school_zone ~> driveBicycle
 ps2_5: $@age > 9$, uncategorized_road ~> driveBicycle
 
+
+ps2_1 > ps1
+ps2_2 > ps1
+ps2_3 > ps1
+ps2_4 > ps1
+ps2_5 > ps1
