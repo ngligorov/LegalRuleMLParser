@@ -1,7 +1,9 @@
 package parser;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
 import Model.Atom;
 import Model.LegalRuleML;
 import Model.Statements;
+import view.MainView;
+import javafx.scene.control.TextArea;
 
 public class JavaToDefeisible {
 
@@ -220,6 +224,17 @@ public class JavaToDefeisible {
 				}
 
 		writer.close();
-
+		
+		//citaj iz fajla i ispisi u textArea1
+		BufferedReader br = new BufferedReader(new FileReader(file)); 
+		MainView mw = new MainView();
+		  
+		String st;
+		String fileText = "";
+		while ((st = br.readLine()) != null) {
+			fileText = fileText + st + "\n";
+		}
+		
+		mw.getTextArea1().setText(fileText);
 	}
 }

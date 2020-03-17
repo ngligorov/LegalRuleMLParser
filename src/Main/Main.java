@@ -8,10 +8,10 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		//Application.launch(MainView.class, args); 
+		Application.launch(MainView.class, args); 
 		
-		RunReasoner rr = new RunReasoner();
-		rr.runReasoner();
+		//RunReasoner rr = new RunReasoner();
+		//rr.runReasoner();
 
 		 
 	}

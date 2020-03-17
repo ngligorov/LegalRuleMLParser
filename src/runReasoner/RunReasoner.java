@@ -1,9 +1,11 @@
 package runReasoner;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import com.app.utils.TextUtilities;
@@ -19,29 +21,47 @@ import spindle.io.IOManager;
 
 public class RunReasoner {
 	
+	String fileName;	
 	
 	public void runReasoner() throws Exception {
-	 	  File file = new File("src/xml/testPrvi.xml"); JAXBContext jaxbContext =
-		  JAXBContext.newInstance(LegalRuleML.class);
+		
+		  Theory theory = IOManager.getTheory(new File("src/x_defeisible/" + fileName),null); 
+		  TheoryNormalizer theoryNormalizer = ReasoningEngineFactory.getTheoryNormalizer(theory.getTheoryType());
+		  theoryNormalizer.setTheory(theory); 
+		  theoryNormalizer.removeDefeater(); 
+		  theory = theoryNormalizer.getTheory(); 
+		  Reasoner reasoner = new Reasoner();
+		  reasoner.loadTheory(theory); 
+		  reasoner.getConclusions(); 
+		  List<Conclusion> conclusions = reasoner.getConclusionsAsList();
 		  
-		  Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller(); LegalRuleML
-		  legalRuleML = (LegalRuleML) jaxbUnmarshaller.unmarshal(file);
-		  
-		  JavaToDefeisible.parse(legalRuleML);
-		  
-		  Theory theory = IOManager.getTheory(new File("src/x_defeisible/aaa.dfl"),
-		  null); TheoryNormalizer theoryNormalizer =
-		  ReasoningEngineFactory.getTheoryNormalizer(theory.getTheoryType());
-		  theoryNormalizer.setTheory(theory); theoryNormalizer.removeDefeater(); theory
-		  = theoryNormalizer.getTheory(); Reasoner reasoner = new Reasoner();
-		  reasoner.loadTheory(theory); reasoner.getConclusions(); List<Conclusion>
-		  conclusions = reasoner.getConclusionsAsList();
-		  
-		  StringBuilder sb = new StringBuilder(TextUtilities.repeatStringPattern("-",
-		  30)); sb.append("\nConclusions\n==========="); for (Conclusion conclusion :
-		  conclusions) { sb.append("\n").append(conclusion.toString()); }
+		  StringBuilder sb = new StringBuilder(TextUtilities.repeatStringPattern("-", 30)); 
+		  sb.append("\nConclusions\n==========="); 
+		  for (Conclusion conclusion : conclusions) { 
+			  sb.append("\n").append(conclusion.toString()); 
+		  }
 		  
 		  
 		  System.out.println(sb.toString());
+		  //System.out.println(fileName); //provera da li je uhvatio ime fajla
+	}
+	
+	public void chooseFile(String fileName) {
+		  if(fileName.contains("semafor") || fileName.contains("saobracajac") || fileName.contains("znakovi")) {
+		  	  this.fileName = "clan47.dfl";
+		  } else {
+			  System.out.println("Neki drugi DFL fajl");
+		  }
+	}
+	
+	
+	public void transformer(File selectedFile) throws JAXBException, IOException {
+		  //File file = new File("src/xml/" + fileName); 
+		  JAXBContext jaxbContext = JAXBContext.newInstance(LegalRuleML.class);
+		  
+		  Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller(); LegalRuleML
+		  legalRuleML = (LegalRuleML) jaxbUnmarshaller.unmarshal(selectedFile);
+		  
+		  JavaToDefeisible.parse(legalRuleML);
 	}
 }
