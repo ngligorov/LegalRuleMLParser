@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import javax.swing.plaf.FileChooserUI;
 import javax.xml.bind.JAXBException;
 
+import org.controlsfx.control.CheckListView;
+
 import Main.Main;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -25,12 +27,18 @@ import runReasoner.RunReasoner;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
+import javafx.scene.Parent;
+import javafx.scene.shape.*;
+import javafx.scene.control.*;
+import javafx.collections.*;
+import javafx.scene.layout.*;
+import javafx.geometry.*;
 
 public class MainView extends Application {
 
 	private Stage stage;
 	private Scene scene, scene1, scene2;
-	private Button btn1, btn2;
+	private Button btn1, btn2, btn1w2, btn2w2;
 	private Pane vBox;
 	private static TextArea textArea1;
 	private static TextArea textArea2;
@@ -116,17 +124,67 @@ public class MainView extends Application {
 	}
 
 	public void wizardWindow2(String chosenFile) {
-		List<String> choices = new ArrayList<String>();
-
+		ObservableList<String> choices = FXCollections.observableArrayList();
+//
 		choices.addAll(Main.factsFileMap.get(chosenFile));
+//
+//		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+//		dialog.setTitle("Choice Dialog");
+//		dialog.setHeaderText("Look, a Choice Dialog");
+//		dialog.setContentText("Choose your number:");
+//
+//		Optional<String> result = dialog.showAndWait();
+//		result.ifPresent(number -> System.out.println("Your choice: " + number));
+		
+		//Rectangle rect = new Rectangle(100, 100, 200, 300);
+		
+		// create the data to show in the CheckListView 
+//		 final ObservableList<String> strings = FXCollections.observableArrayList();
+//		 for (int i = 0; i <= 100; i++) {
+//		     strings.add("Item " + i);
+//		 }
+		 
+		 // Create the CheckListView with the data 
+		 final CheckListView<String> checkListView = new CheckListView<>(choices);
+		       
+		 // and listen to the relevant events (e.g. when the selected indices or 
+		 // selected items change).
+		 checkListView.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+		     public void onChanged(ListChangeListener.Change<? extends String> c) {
+		         System.out.println(checkListView.getCheckModel().getCheckedItems());
+		     }
+		 });
+		 
+		Stage window = new Stage();
+		 
+		btn1w2 = new Button("Ok");
+		btn2w2 = new Button("Cancel");
+		
+		btn2w2.setOnAction(e -> window.close());
+		btn1w2.setOnAction(e -> {
+			System.out.println("TEST TEST TEST");
+		});
+		
+		VBox vbCenter = new VBox();
+		vbCenter.getChildren().add(checkListView);
+		HBox hbButtons = new HBox();
+		hbButtons.getChildren().add(btn1w2);
+		hbButtons.getChildren().add(btn2w2);
+	    hbButtons.setAlignment(Pos.CENTER_RIGHT);
+		
+		BorderPane root = new BorderPane();
+		root.setPadding(new Insets(20));
+		root.setCenter(vbCenter);
+	    root.setBottom(hbButtons);
+		
+		Parent content = root;
 
-		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
-		dialog.setTitle("Choice Dialog");
-		dialog.setHeaderText("Look, a Choice Dialog");
-		dialog.setContentText("Choose your number:");
+		// create scene containing the content
+		Scene scene = new Scene(content);
+		window.setScene(scene);
 
-		Optional<String> result = dialog.showAndWait();
-		result.ifPresent(number -> System.out.println("Your choice: " + number));
+		// make window visible
+		window.show();
 	}
 
 	public TextArea getTextArea1() {
