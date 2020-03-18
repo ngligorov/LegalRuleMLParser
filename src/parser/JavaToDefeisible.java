@@ -19,6 +19,16 @@ import view.MainView;
 import javafx.scene.control.TextArea;
 
 public class JavaToDefeisible {
+	
+	private static String greaterLessThan;
+
+	public static String getGreaterLessThan() {
+		return greaterLessThan;
+	}
+
+	public static void setGreaterLessThan(String greaterLessThan) {
+		JavaToDefeisible.greaterLessThan = greaterLessThan;
+	}
 
 	public static void parse(LegalRuleML legalRuleML) throws IOException {
 
@@ -32,6 +42,8 @@ public class JavaToDefeisible {
 		List<String> decomposedRules = new ArrayList<>();
 		List<String> partialRules = new ArrayList<>();
 		List<String> writtenRules = new ArrayList<>();
+		
+		//Uhvatiti da li ima <, >, =
 
 		// za ispis pocetnog pravila, svi smeju sve
 		for (Statements statement : legalRuleML.getStatements())
@@ -82,16 +94,20 @@ public class JavaToDefeisible {
 							writer.write(statement.getPrescriptiveStatement().getKey() + ": $@");
 							writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
 									.get(0).getRel().getIri().substring(1));
+							
+							setGreaterLessThan(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
+									.get(0).getRel().getIri());
 
 							if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
-									.getRel().getIri().equals(":lt"))
+									.getRel().getIri().equals(":lt")) {
 								writer.write(" < ");
-							else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
-									.getRel().getIri().equals(":gt"))
-								writer.write(" > ");
-							else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
-									.getRel().getIri().equals(":eq"))
-								writer.write(" = ");
+							} else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
+									.getRel().getIri().equals(":gt")) {
+								writer.write(" > ");								
+							} else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
+									.getRel().getIri().equals(":eq")) {
+								writer.write(" = ");								
+							}
 
 							writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
 									.get(1).getInd());

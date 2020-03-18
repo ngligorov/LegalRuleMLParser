@@ -27,6 +27,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import parser.JavaToDefeisible;
 import runReasoner.RunReasoner;
 import spindle.core.dom.Conclusion;
 import javafx.stage.FileChooser;
@@ -160,6 +161,9 @@ public class MainView extends Application {
 		});
 
 		Stage window = new Stage();
+		
+		Label lbl = new Label("Labela 1: ");
+		TextField txtField = new TextField();
 
 		btn1w2 = new Button("Ok");
 		btn2w2 = new Button("Cancel");
@@ -198,6 +202,11 @@ public class MainView extends Application {
 
 		VBox vbCenter = new VBox();
 		vbCenter.getChildren().add(checkListView);
+		if(!JavaToDefeisible.getGreaterLessThan().isEmpty()) {
+			lbl.setText("Enter a number for " + JavaToDefeisible.getGreaterLessThan());
+			vbCenter.getChildren().add(lbl);
+			vbCenter.getChildren().add(txtField);			
+		}
 		HBox hbButtons = new HBox();
 		hbButtons.getChildren().add(btn1w2);
 		hbButtons.getChildren().add(btn2w2);
