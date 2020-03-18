@@ -20,6 +20,7 @@ import javax.xml.bind.Unmarshaller;
 
 import com.app.utils.TextUtilities;
 
+import Main.Main;
 import Model.LegalRuleML;
 import parser.JavaToDefeisible;
 import spindle.Reasoner;
@@ -38,21 +39,16 @@ public class RunReasoner {
 
 	private String fileName;
 	private List<String> facts = new ArrayList<>();
-	private List<Rule> ruleFacts = new ArrayList<>();
+	private String literal = "";
 
 	public List<Conclusion> runReasoner() throws Exception {
-//		Rule fact = new Rule("pedestrian_zone", RuleType.FACT);
-//		fact.addHeadLiteral(new Literal("pedestrian_zone"));
-//		System.out.println(fact.toString());
-
-//		createFacts();
 		addFacts();
+
+		if (!literal.equals(""))
+			addLiteral();
+
 		Theory theory = IOManager.getTheory(new File("src/x_defeisible/" + fileName), null);
 
-//		for(Rule fact : ruleFacts)
-//			theory.getFactsAndAllRules().put(fact.getLabel(), fact);
-
-//		System.out.println("AAAAAAAAAAAAAA -----> " + theory.getFactsCount());
 		TheoryNormalizer theoryNormalizer = ReasoningEngineFactory.getTheoryNormalizer(theory.getTheoryType());
 		theoryNormalizer.setTheory(theory);
 		theoryNormalizer.removeDefeater();
@@ -70,19 +66,37 @@ public class RunReasoner {
 			sb.append("\n").append(conclusion.toString());
 		}
 
-		System.out.println(sb.toString());
-		// System.out.println(fileName); //provera da li je uhvatio ime fajla
-
 		return conclusions;
 	}
 
-	private void createFacts() throws RuleException {
-		for (String fact : this.facts) {
-			Rule rule = new Rule("", RuleType.FACT);
-			rule.addHeadLiteral(new Literal(fact));
-			rule.setLabel(fact);
-			System.out.println(rule.toString());
+	private void addLiteral() throws Exception {
+		BufferedReader br = new BufferedReader(new FileReader("src/x_defeisible/" + fileName));
+
+		StringBuilder sb = new StringBuilder();
+		String line = br.readLine();
+
+		while (line != null) {
+			sb.append(line);
+			sb.append(System.lineSeparator());
+			line = br.readLine();
 		}
+
+		String everything = sb.toString();
+
+		br.close();
+
+		sb = new StringBuilder();
+
+		sb.append("SET @" + Main.literalsFileMap.get(fileName) + " = @VAL(" + literal + ")");
+
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+
+		sb.append(everything);
+
+		PrintWriter writer = new PrintWriter("src/x_defeisible/" + fileName);
+		writer.print(sb.toString());
+		writer.close();
 	}
 
 	private void addFacts() throws Exception {
@@ -96,7 +110,7 @@ public class RunReasoner {
 			sb.append(System.lineSeparator());
 			line = br.readLine();
 		}
-		
+
 		String everything = sb.toString();
 
 		br.close();
@@ -109,7 +123,7 @@ public class RunReasoner {
 		}
 		sb.append(System.lineSeparator());
 		sb.append(System.lineSeparator());
-		
+
 		sb.append(everything);
 
 		PrintWriter writer = new PrintWriter("src/x_defeisible/" + fileName);
@@ -118,7 +132,6 @@ public class RunReasoner {
 	}
 
 	public void transformer(File selectedFile) throws JAXBException, IOException {
-		// File file = new File("src/xml/" + fileName);
 		JAXBContext jaxbContext = JAXBContext.newInstance(LegalRuleML.class);
 
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -141,5 +154,13 @@ public class RunReasoner {
 
 	public void setFacts(List<String> facts) {
 		this.facts = facts;
+	}
+
+	public String getLiteral() {
+		return literal;
+	}
+
+	public void setLiteral(String literal) {
+		this.literal = literal;
 	}
 }

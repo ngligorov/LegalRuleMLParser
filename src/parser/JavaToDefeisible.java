@@ -19,20 +19,11 @@ import view.MainView;
 import javafx.scene.control.TextArea;
 
 public class JavaToDefeisible {
-	
-	private static String greaterLessThan;
-
-	public static String getGreaterLessThan() {
-		return greaterLessThan;
-	}
-
-	public static void setGreaterLessThan(String greaterLessThan) {
-		JavaToDefeisible.greaterLessThan = greaterLessThan;
-	}
 
 	public static void parse(LegalRuleML legalRuleML) throws IOException {
 
 		List<String> facts = new ArrayList<>();
+		String literal = "";
 
 		File file = new File("src/x_defeisible/" + legalRuleML.getComment() + ".dfl");
 		file.createNewFile();
@@ -42,8 +33,6 @@ public class JavaToDefeisible {
 		List<String> decomposedRules = new ArrayList<>();
 		List<String> partialRules = new ArrayList<>();
 		List<String> writtenRules = new ArrayList<>();
-		
-		//Uhvatiti da li ima <, >, =
 
 		// za ispis pocetnog pravila, svi smeju sve
 		for (Statements statement : legalRuleML.getStatements())
@@ -94,19 +83,19 @@ public class JavaToDefeisible {
 							writer.write(statement.getPrescriptiveStatement().getKey() + ": $@");
 							writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
 									.get(0).getRel().getIri().substring(1));
-							
-							setGreaterLessThan(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
-									.get(0).getRel().getIri());
+
+							literal = statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(0)
+									.getRel().getIri().substring(1);
 
 							if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
 									.getRel().getIri().equals(":lt")) {
 								writer.write(" < ");
 							} else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
 									.getRel().getIri().equals(":gt")) {
-								writer.write(" > ");								
+								writer.write(" > ");
 							} else if (statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom().get(1)
 									.getRel().getIri().equals(":eq")) {
-								writer.write(" = ");								
+								writer.write(" = ");
 							}
 
 							writer.write(statement.getPrescriptiveStatement().getRule().getIf().getAnd().getAtom()
@@ -210,12 +199,7 @@ public class JavaToDefeisible {
 									.getAtom().getRel().getIri().substring(1));
 						}
 					}
-
 					// /OR
-
-					// TODO skloni ovo kad zavrsis
-					System.out.println(statement.getPrescriptiveStatement().getRule());
-
 				}
 
 			}
@@ -226,7 +210,6 @@ public class JavaToDefeisible {
 		// superiornost pravila
 		for (Statements statement : legalRuleML.getStatements())
 			if (statement.getOverrideStatement() != null) {
-				System.out.println("usao sam ovde");
 				// celo pravilo
 				if (!decomposedRules.contains(statement.getOverrideStatement().getOverride().getOver().substring(1))
 						&& !decomposedRules
@@ -235,7 +218,6 @@ public class JavaToDefeisible {
 					writer.write(statement.getOverrideStatement().getOverride().getOver().substring(1) + " > "
 							+ legalRuleML.getStatements().get(0).getOverrideStatement().getOverride().getUnder()
 									.substring(1));
-					System.out.println("usao ovde 1");
 				} else {
 					// dekomponovano pravilo
 					String over = statement.getOverrideStatement().getOverride().getOver().substring(1);
@@ -251,21 +233,18 @@ public class JavaToDefeisible {
 							partialUnders.add(partialRule);
 					}
 
-					if(partialOvers.isEmpty())
+					if (partialOvers.isEmpty())
 						partialOvers.add(over);
-					
-					if(partialUnders.isEmpty())
+
+					if (partialUnders.isEmpty())
 						partialUnders.add(under);
-					
+
 					for (String partialOver : partialOvers)
 						for (String partialUnder : partialUnders) {
 
 							writer.newLine();
 							writer.write(partialOver + " > " + partialUnder);
-							System.out.println("usao ovde 2");
 						}
-					System.out.println("usao ovde 2");
-					
 				}
 			}
 		writer.close();
@@ -273,24 +252,8 @@ public class JavaToDefeisible {
 		// dodaj u mapu cinjenica i fajlova
 		Main.factsFileMap.put(legalRuleML.getComment() + ".dfl", new ArrayList<>(facts));
 
-		for (Entry<String, List<String>> keyValue : Main.factsFileMap.entrySet()) {
-			System.out.println(keyValue.getKey());
-
-			for (String str : keyValue.getValue())
-				System.out.println(str);
-		}
-
-//TODO premesti ga na odgovarajuce mesto
-//		// citaj iz fajla i ispisi u textArea1
-//		BufferedReader br = new BufferedReader(new FileReader(file));
-//		MainView mw = new MainView();
-//
-//		String st;
-//		String fileText = "";
-//		while ((st = br.readLine()) != null) {
-//			fileText = fileText + st + "\n";
-//		}
-//
-//		mw.getTextArea1().setText(fileText);
+		// dodaj u mapu literala i fajlova
+		if (!literal.equals(""))
+			Main.literalsFileMap.put(legalRuleML.getComment() + ".dfl", literal);
 	}
 }

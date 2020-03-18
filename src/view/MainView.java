@@ -62,12 +62,12 @@ public class MainView extends Application {
 
 		// TOOLBAR
 		ToolBar toolbar = new ToolBar();
-		btn1 = new Button("Button 1");
+		btn1 = new Button("Choose DFL file");
 		toolbar.getItems().add(btn1);
-		btn2 = new Button("Button 2");
+		btn2 = new Button("Choose LRML file");
 		toolbar.getItems().add(btn2);
 
-		textArea1 = new TextArea("TEST");
+		textArea1 = new TextArea();
 		textArea2 = new TextArea();
 		textArea1.setEditable(false);
 		textArea2.setEditable(false);
@@ -76,8 +76,8 @@ public class MainView extends Application {
 		textArea1.setWrapText(true);
 		textArea2.setWrapText(true);
 
-		lbl1 = new Label("LABELA 1");
-		lbl2 = new Label("LABELA 2");
+		lbl1 = new Label("Theory:");
+		lbl2 = new Label("Conclusions:");
 		lbl1.setStyle("-fx-font-weight: bold;");
 		lbl2.setStyle("-fx-font-weight: bold;");
 
@@ -96,7 +96,7 @@ public class MainView extends Application {
 				e1.printStackTrace();
 			}
 			wizardWindow1();
-			
+
 		});
 
 		btn2.setOnAction(e -> {
@@ -124,13 +124,12 @@ public class MainView extends Application {
 
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
 		dialog.setTitle("Choice Dialog");
-		dialog.setHeaderText("Look, a Choice Dialog");
-		dialog.setContentText("Choose your letter:");
+		dialog.setHeaderText("Defeisible logic");
+		dialog.setContentText("Choose your DFL file:");
 
 		Optional<String> result = dialog.showAndWait();
 
 		result.ifPresent(chosenFile -> {
-			System.out.println("Your choice: " + chosenFile);
 			wizardWindow2(chosenFile);
 			this.chosenFileBtn1 = chosenFile;
 		});
@@ -149,19 +148,18 @@ public class MainView extends Application {
 		// selected items change).
 		checkListView.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 			public void onChanged(ListChangeListener.Change<? extends String> c) {
-				System.out.println(checkListView.getCheckModel().getCheckedItems());
-				ObservableList<String> observableListFacts= checkListView.getCheckModel().getCheckedItems();
+				ObservableList<String> observableListFacts = checkListView.getCheckModel().getCheckedItems();
 				List<String> facts = new ArrayList<>();
-				
-				for(String fact : observableListFacts)
+
+				for (String fact : observableListFacts)
 					facts.add(fact);
-					
+
 				rr.setFacts(facts);
 			}
 		});
 
 		Stage window = new Stage();
-		
+
 		Label lbl = new Label("Labela 1: ");
 		TextField txtField = new TextField();
 
@@ -172,6 +170,12 @@ public class MainView extends Application {
 		btn1w2.setOnAction(e -> {
 
 			try {
+				window.close();
+
+				this.rr.setFileName(chosenFileBtn1);
+				this.rr.setLiteral(txtField.getText());
+				List<Conclusion> conclusions = this.rr.runReasoner();
+
 				BufferedReader br = new BufferedReader(new FileReader(new File("src/x_defeisible/" + chosenFileBtn1)));
 
 				String st;
@@ -181,11 +185,7 @@ public class MainView extends Application {
 				}
 
 				textArea1.setText(fileText);
-				window.close();
-
-				this.rr.setFileName(chosenFileBtn1);
-				List<Conclusion> conclusions = this.rr.runReasoner();
-
+				
 				StringBuilder sb = new StringBuilder(TextUtilities.repeatStringPattern("-", 30));
 				sb.append("\nConclusions\n===========");
 				for (Conclusion conclusion : conclusions) {
@@ -202,10 +202,10 @@ public class MainView extends Application {
 
 		VBox vbCenter = new VBox();
 		vbCenter.getChildren().add(checkListView);
-		if(!JavaToDefeisible.getGreaterLessThan().isEmpty()) {
-			lbl.setText("Enter a number for " + JavaToDefeisible.getGreaterLessThan());
+		if (Main.literalsFileMap.get(chosenFile) != null) {
+			lbl.setText("Enter a number for " + Main.literalsFileMap.get(chosenFile) + ":");
 			vbCenter.getChildren().add(lbl);
-			vbCenter.getChildren().add(txtField);			
+			vbCenter.getChildren().add(txtField);
 		}
 		HBox hbButtons = new HBox();
 		hbButtons.getChildren().add(btn1w2);
@@ -249,10 +249,8 @@ public class MainView extends Application {
 		File folder = new File("src/xml");
 		files = folder.list();
 
-		for (String filePath : files) {
-			System.out.println("src/xml/" + filePath);
+		for (String filePath : files)
 			rr.transformer(new File("src/xml/" + filePath));
-		}
 	}
 
 }

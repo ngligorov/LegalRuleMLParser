@@ -12,6 +12,7 @@ import view.MainView;
 public class Main {
 
 	public static Map<String, List<String>> factsFileMap = new HashMap<>();
+	public static Map<String, String> literalsFileMap = new HashMap<>();
 	
 	public static void main(String[] args) throws Exception {
 		
