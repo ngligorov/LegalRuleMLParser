@@ -101,13 +101,13 @@ public class MainView extends Application {
 
 		btn2.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
-			selectedFile = fileChooser.showOpenDialog(stage);
 			try {
+				selectedFile = fileChooser.showOpenDialog(stage);
 				rr.transformer(selectedFile);
-			} catch (JAXBException | IOException e1) {
+			} catch (IllegalArgumentException | JAXBException | IOException e1) {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Warning");
-				alert.setHeaderText("You can't select that file!");
+				alert.setHeaderText("You have to select a file!");
 				alert.setContentText("File you've selected is not of the right type!");
 				alert.showAndWait();
 			}
