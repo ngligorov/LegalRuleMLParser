@@ -1,0 +1,13 @@
+Seminarski rad se nalazi u folderu "esej".
+
+Aplikacija se pokrece pokretanjem Main klase u projektu, korišćenjem opcije "Run as Java application" 
+iz Eclipse-a ili IntelliJ-a.
+
+Uputsvo za korišćenje:
+1. Odabere se LegalRuleML fajl iz paketa "src->xml" u projektu, pritiskom na dugme "Choose LRML file". Parsiranje se vrši automatski.
+2. Zatim se pritiskom na dugme "Choose DFL file" odabere fajl nad kojim želimo da rezonujemo. Tu se nalazi i prethodno
+isparsirani LRML fajl.
+3. Nakon odabira, pojaviće se lista činjenica od kojih se izaberu željene. One predstavljaju testne slučajeve na osonvu kojih
+se dobijaju različiti zaključci u kombinaciji sa pravilima u defeasible logici.
+4. Na kraju se u gornjem delu prozora može videti kako izgleda isparsirana verzija, a u dodnjem delu dobijeni zaključci 
+u formatu koji daje SPINdle.
