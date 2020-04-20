@@ -29,12 +29,6 @@
 		</lrml:appliesAssociations>
 	</lrml:Context>
 
-<!-- 	<lrml:Statements key="ovr1"> -->
-<!-- 		<lrml:OverrideStatement> -->
-<!-- 			<lrml:Override over="#ps2" under="#ps1" /> -->
-<!-- 		</lrml:OverrideStatement> -->
-<!-- 	</lrml:Statements> -->
-	<!--Clan 47. 1 -->
 	<lrml:Statements key="textblock1">
 		<lrml:hasQualification>
 			<lrml:Override over="#ps2" under="#ps1" />
@@ -90,13 +84,13 @@
 					<lrml:DefeasibleStrength key="str1" />
 				</lrml:hasStrength>
 				<ruleml:if>
-					<ruleml:And key=":and1">
-						<ruleml:Atom key=":atom1">
+					<ruleml:And key=":and2">
+						<ruleml:Atom key=":atom4">
 							<ruleml:Var>X</ruleml:Var>
 							<ruleml:Ind>preseca_biciklisticku_stazu</ruleml:Ind>
 						</ruleml:Atom>
-						<ruleml:Or key=":or1">
-							<ruleml:Atom key=":atom2">
+						<ruleml:Or key=":or2">
+							<ruleml:Atom key=":atom5">
 								<ruleml:Rel iri=":eq" />
 								<ruleml:Var>X</ruleml:Var>
 								<ruleml:Ind>biciklisticka_staza</ruleml:Ind>
@@ -127,8 +121,8 @@
 					<lrml:DefeasibleStrength key="str1" />
 				</lrml:hasStrength>
 				<ruleml:if>
-					<ruleml:And key=":and1">
-						<ruleml:Atom key=":atom1">
+					<ruleml:And key=":and3">
+						<ruleml:Atom key=":atom6">
 							<ruleml:Rel iri=":vozilo_nailazi_zdesna" />
 							<ruleml:Var>X</ruleml:Var>
 							<ruleml:Ind>vozilo_nailazi_zdesna</ruleml:Ind>
@@ -158,19 +152,19 @@
 					<lrml:DefeasibleStrength key="str1" />
 				</lrml:hasStrength>
 				<ruleml:if>
-					<ruleml:And key=":and1">
-						<ruleml:Atom key=":atom1">
+					<ruleml:And key=":and4">
+						<ruleml:Atom key=":atom7">
 							<ruleml:Rel iri=":skretanje_ulevo" />
 							<ruleml:Var>X</ruleml:Var>
 							<ruleml:Ind>skretanje_ulevo</ruleml:Ind>
 						</ruleml:Atom>
-						<ruleml:Or key=":or1">
-							<ruleml:Atom key=":atom3">
+						<ruleml:Or key=":or3">
+							<ruleml:Atom key=":atom8">
 								<ruleml:Rel iri=":eq" />
 								<ruleml:Var>X</ruleml:Var>
 								<ruleml:Ind>zadrzava_pravac_kretanja_iz_suprotnog_smera</ruleml:Ind>
 							</ruleml:Atom>
-							<ruleml:Atom key=":atom4">
+							<ruleml:Atom key=":atom9">
 								<ruleml:Rel iri=":eq" />
 								<ruleml:Var>X</ruleml:Var>
 								<ruleml:Ind>skrece_udesno_iz_suprotnog_smera</ruleml:Ind>
