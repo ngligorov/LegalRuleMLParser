@@ -2,4 +2,5 @@
 autori: Nikola Ilic, Nenad Gligorov<br/><br/>
 
 Seminarski rad se nalazi u folderu "esej".<br/>
-Aplikacija se pokrece pokretanjem Main klase u projektu, koriscenjem opcije "Run as Java application" iz Eclipse-a ili IntelliJ-a.<br/>
+Aplikacija u JAR formatu se nalazi u folderu "izvrsna_verzija".<br/>
+Uputstvo za pokretanje aplikacije je opisano u fajlu "uputstvo_za_pokretanje.txt".<br/>
