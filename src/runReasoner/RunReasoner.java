@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -131,7 +132,7 @@ public class RunReasoner {
 		writer.close();
 	}
 
-	public void transformer(File selectedFile) throws JAXBException, IOException {
+	public void transformer(InputStream selectedFile) throws JAXBException, IOException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(LegalRuleML.class);
 
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();

@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -101,16 +103,16 @@ public class MainView extends Application {
 
 		btn2.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
-			try {
-				selectedFile = fileChooser.showOpenDialog(stage);
-				rr.transformer(selectedFile);
-			} catch (IllegalArgumentException | JAXBException | IOException e1) {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Warning");
-				alert.setHeaderText("You have to select a file!");
-				alert.setContentText("File you've selected is not of the right type!");
-				alert.showAndWait();
-			}
+//			try {
+//				selectedFile = fileChooser.showOpenDialog(stage);
+//				rr.transformer(selectedFile);
+//			} catch (IllegalArgumentException | JAXBException | IOException e1) {
+//				Alert alert = new Alert(AlertType.WARNING);
+//				alert.setTitle("Warning");
+//				alert.setHeaderText("You have to select a file!");
+//				alert.setContentText("File you've selected is not of the right type!");
+//				alert.showAndWait();
+//			}
 		});
 
 		primaryStage.show();
@@ -176,7 +178,11 @@ public class MainView extends Application {
 				this.rr.setLiteral(txtField.getText());
 				List<Conclusion> conclusions = this.rr.runReasoner();
 
-				BufferedReader br = new BufferedReader(new FileReader(new File("src/x_defeisible/" + chosenFileBtn1)));
+				URL url = this.getClass()
+						.getResource(File.separator + "x_defeisible" + File.separator + chosenFileBtn1);
+				File fajl = new File(url.toURI());
+
+				BufferedReader br = new BufferedReader(new FileReader(fajl));
 
 				String st;
 				String fileText = "";
@@ -185,7 +191,7 @@ public class MainView extends Application {
 				}
 
 				textArea1.setText(fileText);
-				
+
 				StringBuilder sb = new StringBuilder(TextUtilities.repeatStringPattern("-", 30));
 				sb.append("\nConclusions\n===========");
 				for (Conclusion conclusion : conclusions) {
@@ -246,11 +252,18 @@ public class MainView extends Application {
 	private void parseXmlFiles() throws Exception {
 		String[] files;
 
-		File folder = new File("src/xml");
-		files = folder.list();
+		InputStream inputStream = this.getClass().getResourceAsStream("/xml/biciklisti.xml");
+//		System.out.println(url);
 
-		for (String filePath : files)
-			rr.transformer(new File("src/xml/" + filePath));
+//		for (String filePath : files) {
+//			url = this.getClass().getResource(File.separator + "xml" + File.separator + filePath);
+//			File fajl = new File(url.toURI());
+//
+//			rr.transformer(fajl);
+		
+		rr.transformer(inputStream);
+		inputStream = this.getClass().getResourceAsStream("/xml/raskrsnica.xml");
+		rr.transformer(inputStream);
 	}
 
 }

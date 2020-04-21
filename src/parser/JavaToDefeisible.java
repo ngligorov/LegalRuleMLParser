@@ -25,7 +25,7 @@ public class JavaToDefeisible {
 		List<String> facts = new ArrayList<>();
 		String literal = "";
 
-		File file = new File("src/x_defeisible/" + legalRuleML.getComment() + ".dfl");
+		File file = new File("x_defeisible/" + legalRuleML.getComment() + ".dfl");
 		file.createNewFile();
 
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
