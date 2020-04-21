@@ -1,13 +1,19 @@
 Seminarski rad se nalazi u folderu "esej".
 
-Aplikacija se pokrece pokretanjem Main klase u projektu, korišćenjem opcije "Run as Java application" 
+Aplikacija se pokrece pokretanjem Main klase u projektu, koriÅ¡Ä‡enjem opcije "Run as Java application" 
 iz Eclipse-a ili IntelliJ-a.
 
-Uputsvo za korišćenje:
-1. Odabere se LegalRuleML fajl iz paketa "src->xml" u projektu, pritiskom na dugme "Choose LRML file". Parsiranje se vrši automatski.
-2. Zatim se pritiskom na dugme "Choose DFL file" odabere fajl nad kojim želimo da rezonujemo. Tu se nalazi i prethodno
+Izvrsna verzija se nalazi u folderu izvrsna_verzija i pokrece se tako sto otvori command prompt kada smo pozicionirani u tom folderu i ukuca se:
+"java -jar LegalRuleMLParser.jar" 
+
+Uputsvo za koriÅ¡Ä‡enje:
+1. Odabere se LegalRuleML fajl (.xml je samo ekstenzija da bi spindle mogao da ga prepozna) iz paketa "src->xml" u projektu (za izvrsnu verziju potrevno je otvoriti fajlove koji se nalaze u izvrsna_verzija->xml), pritiskom na dugme "Choose LRML file". Parsiranje se vrÅ¡i automatski.
+2. Zatim se pritiskom na dugme "Choose DFL file" odabere fajl nad kojim Å¾elimo da rezonujemo. Tu se nalazi i prethodno
 isparsirani LRML fajl.
-3. Nakon odabira, pojaviće se lista činjenica od kojih se izaberu željene. One predstavljaju testne slučajeve na osonvu kojih
-se dobijaju različiti zaključci u kombinaciji sa pravilima u defeasible logici.
-4. Na kraju se u gornjem delu prozora može videti kako izgleda isparsirana verzija, a u dodnjem delu dobijeni zaključci 
+3. Nakon odabira, pojaviÄ‡e se lista Ä�injenica od kojih se izaberu Å¾eljene. One predstavljaju testne sluÄ�ajeve na osonvu kojih
+se dobijaju razliÄ�iti zakljuÄ�ci u kombinaciji sa pravilima u defeasible logici.
+4. Na kraju se u gornjem delu prozora moÅ¾e videti kako izgleda isparsirana verzija, a u dodnjem delu dobijeni zakljuÄ�ci 
 u formatu koji daje SPINdle.
+
+**Primer sa biciklistima je primer gde smo pokusali da rezonujemo i nad promenljivama u defeasible logici, ali rezoner nece da prepozna iako je moguce uneti vrednost
+za godine u dijalogu kada se odavebere clan88.dfl
