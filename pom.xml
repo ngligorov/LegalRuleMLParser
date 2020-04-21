@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>LegalRuleMLParser</groupId>
 	<artifactId>LegalRuleMLParser</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>_01</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -16,8 +16,55 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>Main.Main</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.2</version>
+				<executions>
+					<execution>
+						<id>install-external</id>
+						<phase>clean</phase>
+						<configuration>
+							<file>${basedir}/lib/SPINdle_2.2.4.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<groupId>com.spindle</groupId>
+							<artifactId>spindle_local</artifactId>
+							<version>2.2.4</version>
+							<packaging>jar</packaging>
+							<generatePom>true</generatePom>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
@@ -25,9 +72,21 @@
 			<version>2.2.11</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.controlsfx</groupId>
-		    <artifactId>controlsfx</artifactId>
-		    <version>8.20.8</version>
+			<groupId>org.controlsfx</groupId>
+			<artifactId>controlsfx</artifactId>
+			<version>8.20.8</version>
+		</dependency>
+		<dependency>
+			<groupId>com.spindle</groupId>
+			<artifactId>spindle_local</artifactId>
+			<version>2.2.4</version>
 		</dependency>
 	</dependencies>
+
+	<!-- <repositories> -->
+	<!-- <repository> -->
+	<!-- <id>localrepository</id> -->
+	<!-- <url>${project.basedir}\lib</url> -->
+	<!-- </repository> -->
+	<!-- </repositories> -->
 </project>

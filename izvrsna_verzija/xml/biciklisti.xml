@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="./schemas/relaxng/lrml-compact.rnc" type="application/relax-ng-compact-syntax"?>
+<lrml:LegalRuleML
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://docs.oasis-open.org/legalruleml/examples/compactified/ex8-defeasible-compact#"
+	xmlns:lrml="http://docs.oasis-open.org/legalruleml/ns/v1.0/"
+	xmlns:ruleml="http://ruleml.org/spec"
+	xsi:schemaLocation="http://docs.oasis-open.org/legalruleml/ns/v1.0/ ../../schemas/xsd/xsd-compact/lrml-compact.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<lrml:Comment>Clan88</lrml:Comment>
+
+	<!-- LegalSource(s) is an element that represents IRI-based identifier source(s). -->
+	<lrml:LegalSources
+		xmlns:appex="http://docs.oasis-open.org/legalruleml/examples/compactified/"
+		refType="http://example.org/lrml#LegalSource">
+		<lrml:LegalSource refersTo="ref1"
+			refID="/akn/rs/2009-06-02/sr@/!main#sec_4-20"
+			refIDSystemName="AkomaNtoso3.0-2016-03" />
+	</lrml:LegalSources>
+
+	<!-- Time(s) element is an element that represents point(s) in time. -->
+	<lrml:Times>
+		<ruleml:Time key=":t1">
+			<ruleml:Data xsi:type="xs:dateTime">2009-05-10T00:00:00</ruleml:Data>
+		</ruleml:Time>
+	</lrml:Times>
+
+	<!-- TemporalCharacteristic(s) is an element that represents temporal characteristic(s) 
+		of legal rules. -->
+	<lrml:TemporalCharacteristics
+		key="tblock1">
+		<lrml:TemporalCharacteristic key="nev1">
+			<lrml:forStatus
+				iri="http://docs.oasis-open.org/legalruleml/ns/v1.0/vocab#InForce" />
+			<lrml:hasStatusDevelopment
+				iri="http://docs.oasis-open.org/legalruleml/ns/v1.0/vocab#Starts" />
+			<lrml:atTime keyref="#t1" />
+		</lrml:TemporalCharacteristic>
+	</lrml:TemporalCharacteristics>
+
+	<!-- Authoritie(s) is an element that represents authoritie(s) creating 
+		legal rules. -->
+	<lrml:Authorities>
+		<lrml:Authority key="parliament"
+			sameAs="http://example.org/authority#parliament" />
+	</lrml:Authorities>
+
+	<!-- Jurisdiction(s) is an element that represents jurisdiction(s) of legal 
+		rules. -->
+	<lrml:Jurisdictions>
+		<lrml:Jurisdiction key="rs"
+			sameAs="http://example.org/jurisdiction#Serbia" />
+	</lrml:Jurisdictions>
+
+	<!-- Association(s) is an element that represents association(s) between 
+		legal rules and legal sources, temporal characteristics, jurisdictions, etc. -->
+	<lrml:Associations key="assoc1">
+		<lrml:Association>
+			<lrml:appliesSource keyref="#ref1" />
+			<lrml:toTarget keyref="#ps1" />
+			<lrml:toTarget keyref="#ps2" />
+		</lrml:Association>
+		<lrml:Association>
+			<lrml:appliesTemporalCharacteristics
+				keyref="#tblock1" />
+			<lrml:toTarget keyref="#ps1" />
+			<lrml:toTarget keyref="#ps2" />
+		</lrml:Association>
+		<lrml:Association>
+			<lrml:appliesAuthority keyref="#parliament" />
+			<lrml:appliesJurisdiction keyref="#rs" />
+			<lrml:toTarget keyref="#ps1" />
+			<lrml:toTarget keyref="#ps2" />
+		</lrml:Association>
+	</lrml:Associations>
+
+	<!-- Context is an element that represents context of legal rules. -->
+	<lrml:Context key="ctx1" hasCreationDate="#t1">
+		<lrml:appliesSource keyref="#ref1" />
+		<lrml:appliesTemporalCharacteristics
+			keyref="#tblock1" />
+		<lrml:appliesAuthority keyref="#parliament" />
+		<lrml:appliesJurisdiction keyref="#rs" />
+
+		<lrml:inScope keyref="#ps1" />
+		<lrml:inScope keyref="#ps4" />
+	</lrml:Context>
+
+	<!-- Context is an element that represents context of legal rules. -->
+	<lrml:Statements key="ovr1">
+		<lrml:OverrideStatement>
+			<lrml:Override over="#ps2" under="#ps1" />
+		</lrml:OverrideStatement>
+	</lrml:Statements>
+
+	<!-- PrescriptiveStatement is an element that represents a disposition. -->
+	<!-- Чл. 88 ст. 1 - Дете млађе од 12 година не сме да управља бициклом на 
+		јавним путевима. -->
+	<lrml:Statements>
+		<lrml:PrescriptiveStatement key="ps1">
+			<ruleml:Rule key=":ruletemplate3" keyref=":ruletemplate2">
+				<lrml:hasStrength>
+					<lrml:Defeater key="str4" />
+				</lrml:hasStrength>
+				<ruleml:if>
+					<ruleml:And key=":and1">
+						<ruleml:Atom key=":atom1">
+							<ruleml:Rel iri=":age" />
+							<ruleml:Var>X</ruleml:Var>
+							<ruleml:Var>Y</ruleml:Var>
+						</ruleml:Atom>
+						<ruleml:Atom key=":atom2">
+							<ruleml:Rel iri=":lt" />
+							<ruleml:Var>Y</ruleml:Var>
+							<ruleml:Ind>12</ruleml:Ind>
+						</ruleml:Atom>
+					</ruleml:And>
+				</ruleml:if>
+				<ruleml:then>
+					<lrml:Prohibition key="prohib1">
+						<ruleml:Atom key=":atom3">
+							<ruleml:Rel iri=":driveBicycle" />
+							<ruleml:Var>X</ruleml:Var>
+							<ruleml:Var>Z</ruleml:Var>
+						</ruleml:Atom>
+					</lrml:Prohibition>
+				</ruleml:then>
+			</ruleml:Rule>
+		</lrml:PrescriptiveStatement>
+	</lrml:Statements>
+
+	<!-- Чл. 88 ст. 2 - Изузетно у пешачкој зони, зони успореног саобраћаја, 
+		зони „30”, зони школе и некатегорисаном путу, бициклом може управљати и дете 
+		са навршених девет година. -->
+	<lrml:Statements>
+		<lrml:PrescriptiveStatement key="ps2">
+			<ruleml:Rule key=":ruletemplate3" keyref=":ruletemplate2">
+				<lrml:hasStrength>
+					<lrml:Defeater key="str4" />
+				</lrml:hasStrength>
+				<ruleml:if>
+					<ruleml:And key=":and2">
+						<ruleml:Atom key=":atom4">
+							<ruleml:Rel iri=":age" />
+							<ruleml:Var>X</ruleml:Var>
+							<ruleml:Var>Y</ruleml:Var>
+						</ruleml:Atom>
+						<ruleml:Atom key=":atom5">
+							<ruleml:Rel iri=":gt" />
+							<ruleml:Var>Y</ruleml:Var>
+							<ruleml:Ind>9</ruleml:Ind>
+						</ruleml:Atom>
+						<ruleml:Or key=":or1">
+							<ruleml:Atom key=":atom6">
+								<ruleml:Rel iri=":eq" />
+								<ruleml:Var>Z</ruleml:Var>
+								<ruleml:Ind>pedestrian_zone</ruleml:Ind>
+							</ruleml:Atom>
+							<ruleml:Atom key=":atom7">
+								<ruleml:Rel iri=":eq" />
+								<ruleml:Var>Z</ruleml:Var>
+								<ruleml:Ind>slow_traffic_zone</ruleml:Ind>
+							</ruleml:Atom>
+							<ruleml:Atom key=":atom8">
+								<ruleml:Rel iri=":eq" />
+								<ruleml:Var>Z</ruleml:Var>
+								<ruleml:Ind>30_zone</ruleml:Ind>
+							</ruleml:Atom>
+							<ruleml:Atom key=":atom9">
+								<ruleml:Rel iri=":eq" />
+								<ruleml:Var>Z</ruleml:Var>
+								<ruleml:Ind>school_zone</ruleml:Ind>
+							</ruleml:Atom>
+							<ruleml:Atom key=":atom10">
+								<ruleml:Rel iri=":eq" />
+								<ruleml:Var>Z</ruleml:Var>
+								<ruleml:Ind>uncategorized_road</ruleml:Ind>
+							</ruleml:Atom>
+						</ruleml:Or>
+					</ruleml:And>
+				</ruleml:if>
+				<ruleml:then>
+					<lrml:Permission key="permiss1">
+						<ruleml:Atom key=":atom11">
+							<ruleml:Rel iri=":driveBicycle" />
+							<ruleml:Var>X</ruleml:Var>
+							<ruleml:Var>Z</ruleml:Var>
+						</ruleml:Atom>
+					</lrml:Permission>
+				</ruleml:then>
+			</ruleml:Rule>
+
+		</lrml:PrescriptiveStatement>
+	</lrml:Statements>
+
+	<!-- PenaltyStatement is an element that represents a sanction. -->
+	<!-- Члан 332. - Новчаном казном у износу од 10.000** до 20.000 динара казниће 
+		се за прекршај лице које поступи супротно одредбама из следећих чланова овог 
+		закона: -->
+	<lrml:Statements>
+		<lrml:PenaltyStatement key="pen1">
+			<lrml:SuborderList>
+				<lrml:Obligation key="oblig1">
+					<ruleml:And key=":and3" />
+					<ruleml:Atom key=":atom12">
+						<ruleml:Rel iri=":pay" />
+						<ruleml:Var>X</ruleml:Var>
+						<ruleml:Var>Y</ruleml:Var>
+					</ruleml:Atom>
+					<ruleml:Atom key=":atom13">
+						<ruleml:Rel iri=":gt" />
+						<ruleml:Var>Y</ruleml:Var>
+						<ruleml:Ind>10000</ruleml:Ind>
+					</ruleml:Atom>
+					<ruleml:Atom key=":atom14">
+						<ruleml:Rel iri=":lt" />
+						<ruleml:Var>Y</ruleml:Var>
+						<ruleml:Ind>20000</ruleml:Ind>
+					</ruleml:Atom>
+					<ruleml:And key=":and3" />
+				</lrml:Obligation>
+
+			</lrml:SuborderList>
+		</lrml:PenaltyStatement>
+	</lrml:Statements>
+
+	<!-- ReparationStatement is an element that associates a disposition and 
+		a sanction. -->
+	<lrml:Statements>
+		<lrml:ReparationStatement>
+			<lrml:Reparation key="rep1">
+				<lrml:appliesPenalty keyref="#pen1" />
+				<lrml:toPrescriptiveStatement
+					keyref="#ps1" />
+			</lrml:Reparation>
+		</lrml:ReparationStatement>
+		<lrml:ReparationStatement>
+			<lrml:Reparation key="rep2">
+				<lrml:appliesPenalty keyref="#pen1" />
+				<lrml:toPrescriptiveStatement
+					keyref="#ps2" />
+			</lrml:Reparation>
+		</lrml:ReparationStatement>
+	</lrml:Statements>
+</lrml:LegalRuleML>

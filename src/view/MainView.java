@@ -176,7 +176,7 @@ public class MainView extends Application {
 				this.rr.setLiteral(txtField.getText());
 				List<Conclusion> conclusions = this.rr.runReasoner();
 
-				BufferedReader br = new BufferedReader(new FileReader(new File("src/x_defeisible/" + chosenFileBtn1)));
+				BufferedReader br = new BufferedReader(new FileReader(new File("x_defeisible/" + chosenFileBtn1)));
 
 				String st;
 				String fileText = "";
@@ -246,11 +246,11 @@ public class MainView extends Application {
 	private void parseXmlFiles() throws Exception {
 		String[] files;
 
-		File folder = new File("src/xml");
+		File folder = new File("xml");
 		files = folder.list();
 
 		for (String filePath : files)
-			rr.transformer(new File("src/xml/" + filePath));
+			rr.transformer(new File("xml/" + filePath));
 	}
 
 }

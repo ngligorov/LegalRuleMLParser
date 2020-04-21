@@ -47,7 +47,7 @@ public class RunReasoner {
 		if (!literal.equals(""))
 			addLiteral();
 
-		Theory theory = IOManager.getTheory(new File("src/x_defeisible/" + fileName), null);
+		Theory theory = IOManager.getTheory(new File("x_defeisible/" + fileName), null);
 
 		TheoryNormalizer theoryNormalizer = ReasoningEngineFactory.getTheoryNormalizer(theory.getTheoryType());
 		theoryNormalizer.setTheory(theory);
@@ -70,7 +70,7 @@ public class RunReasoner {
 	}
 
 	private void addLiteral() throws Exception {
-		BufferedReader br = new BufferedReader(new FileReader("src/x_defeisible/" + fileName));
+		BufferedReader br = new BufferedReader(new FileReader("x_defeisible/" + fileName));
 
 		StringBuilder sb = new StringBuilder();
 		String line = br.readLine();
@@ -94,13 +94,13 @@ public class RunReasoner {
 
 		sb.append(everything);
 
-		PrintWriter writer = new PrintWriter("src/x_defeisible/" + fileName);
+		PrintWriter writer = new PrintWriter("x_defeisible/" + fileName);
 		writer.print(sb.toString());
 		writer.close();
 	}
 
 	private void addFacts() throws Exception {
-		BufferedReader br = new BufferedReader(new FileReader("src/x_defeisible/" + fileName));
+		BufferedReader br = new BufferedReader(new FileReader("x_defeisible/" + fileName));
 
 		StringBuilder sb = new StringBuilder();
 		String line = br.readLine();
@@ -126,7 +126,7 @@ public class RunReasoner {
 
 		sb.append(everything);
 
-		PrintWriter writer = new PrintWriter("src/x_defeisible/" + fileName);
+		PrintWriter writer = new PrintWriter("x_defeisible/" + fileName);
 		writer.print(sb.toString());
 		writer.close();
 	}
